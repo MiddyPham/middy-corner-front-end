@@ -8,6 +8,7 @@ export const HeaderContainer = styled.div`
   background-color: #fff;
   position: relative;
   z-index: 100;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
 `
 
 export const Logo = styled.div`
@@ -76,38 +77,50 @@ export const LanguageButton = styled.div`
   cursor: pointer;
   padding: 8px 16px;
   border: 1px solid #ccc;
-  border-radius: 4px;
+  border-radius: 16px;
   display: flex;
   align-items: center;
   gap: 8px;
   font-weight: 500;
-  min-width: 80px;
+  min-width: 20px;
+  min-height: 20px;
   justify-content: center;
 
   &:hover {
-    background-color: #f5f5f5;
+    color: #fff;
+    background-color: var(--primary-color);
   }
 `
 
-export const LanguageDropdown = styled.div<{ isOpen: boolean }>`
+export const LanguageDropdown = styled.div<{ 'data-is-open': boolean }>`
   position: absolute;
-  top: 100%;
-  right: 0;
-  margin-top: 4px;
+  right: 100%;
+  margin-right: 8px;
   background: white;
   border: 1px solid #ccc;
-  border-radius: 4px;
+  border-radius: 16px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  display: ${props => props.isOpen ? 'block' : 'none'};
+  display: flex;
+  flex-direction: row;
+  gap: 4px;
+  box-sizing: border-box;
   z-index: 1000;
+  opacity: ${props => props['data-is-open'] ? 1 : 0};
+  transform: ${props => props['data-is-open'] ? 'translateX(0)' : 'translateX(10px)'};
+  visibility: ${props => props['data-is-open'] ? 'visible' : 'hidden'};
+  transition: all 0.2s ease-in-out;
 `
 
 export const LanguageOption = styled.div`
-  padding: 8px 16px;
+  padding: 10px 14px;
+  border-radius: 16px;
   cursor: pointer;
   white-space: nowrap;
+  transition: background-color 0.2s ease;
+  color: #000;
   
   &:hover {
-    background-color: #f5f5f5;
+    color: #fff;
+    background-color: var(--primary-color);
   }
 `
