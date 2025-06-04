@@ -13,6 +13,7 @@ import Image from "next/image";
 import Images from "@/assets";
 import { LanguageManager } from "@/lang/LanguageManager";
 import useTrans from "@/lang/useTrans";
+import Link from "next/link";
 
 const LANGUAGE_MAP = {
   en: "EN",
@@ -65,7 +66,9 @@ const Header = () => {
       </Logo>
       <Nav>
         <NavItem>
-          <NavItemText data-hover={trans.header.blog}>{trans.header.blog}</NavItemText>
+          <Link href="/blog">
+            <NavItemText data-hover={trans.header.blog}>{trans.header.blog}</NavItemText>
+          </Link>
         </NavItem>
         <NavItem>
           <NavItemText data-hover={trans.header.food}>{trans.header.food}</NavItemText>

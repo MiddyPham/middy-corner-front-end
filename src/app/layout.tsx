@@ -2,6 +2,8 @@
 import { Geist, Geist_Mono } from "next/font/google";
 import "../styles/global.css";
 import styled from 'styled-components';
+import Header from "@/components/Header";
+import Footer from "@/components/Footer";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -19,6 +21,10 @@ const MainLayout = styled.div`
   flex-direction: column;
 `
 
+const MainContent = styled.main`
+  flex: 1;
+`
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -28,7 +34,11 @@ export default function RootLayout({
     <html lang="en">
       <body className={`${geistSans.variable} ${geistMono.variable}`}>
         <MainLayout>
-          {children}
+          <Header />
+          <MainContent>
+            {children}
+          </MainContent>
+          <Footer />
         </MainLayout>
       </body>
     </html>

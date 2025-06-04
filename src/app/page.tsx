@@ -1,14 +1,10 @@
 'use client'
 import "../styles/global.css";
-import Header from "@/components/Header";
-import Footer from "@/components/Footer";
 
 export default function Home() {
   return (
-    <>
-      <Header />
+    <div>
       <h1>Hello World</h1>
-      <Footer />
-    </>
+    </div>
   );
 }

@@ -33,6 +33,10 @@ export const NavItem = styled.div<{ hasDropdown?: boolean }>`
   position: relative;
   height: 24px;
   overflow: hidden;
+  a {
+    text-decoration: none;
+    color: inherit;
+  }
 `
 
 export const NavItemText = styled.div`
