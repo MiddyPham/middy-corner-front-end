@@ -1,7 +1,9 @@
 const text = {
     header: {
         blog: 'ブログ',
-        food: '食品'
+        food: '食品',
+        home: 'ホーム',
+        features: '特徴',
     },
     footer: {
         about: {

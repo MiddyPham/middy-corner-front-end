@@ -1,19 +1,12 @@
-import React, { useState, useEffect } from "react";
-import {
-  HeaderContainer,
-  Logo,
-  Nav,
-  NavItem,
-  NavItemText,
-  LanguageButton,
-  LanguageDropdown,
-  LanguageOption,
-} from "./headerStyle";
-import Image from "next/image";
-import Images from "@/assets";
-import { LanguageManager } from "@/lang/LanguageManager";
-import useTrans from "@/lang/useTrans";
-import Link from "next/link";
+'use client'
+import React, { useState, useEffect } from 'react';
+import styled from 'styled-components';
+import Link from 'next/link';
+import Image from 'next/image';
+import Images from '@/assets';
+import { LanguageManager } from '@/lang/LanguageManager';
+import useTrans from '@/lang/useTrans';
+import { HeaderContainer, Nav, Logo, NavLinks, RightSection, LanguageButton, LanguageDropdown, LanguageOption, MobileMenuButton, Overlay, NavLink, NavItemText, NavItem, LoginButton } from './headerStyle';
 
 const LANGUAGE_MAP = {
   en: "EN",
@@ -27,21 +20,32 @@ const TypeLanguage = {
   VI: "id",
 } as const;
 
-type LanguageKey = keyof typeof TypeLanguage;
-type LanguageValue = typeof TypeLanguage[LanguageKey];
+type LanguageValue = typeof TypeLanguage[keyof typeof TypeLanguage];
 
-const DEFAULT_LANGUAGE = "en";
-
-const Header = () => {
+export default function Header() {
   const trans = useTrans();
+  const [scrolled, setScrolled] = useState(false);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const [currentLang, setCurrentLang] = useState(DEFAULT_LANGUAGE);
+  const [currentLang, setCurrentLang] = useState('');
   const [isMounted, setIsMounted] = useState(false);
 
   useEffect(() => {
     setIsMounted(true);
     setCurrentLang(LanguageManager.getLanguage());
+
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 50);
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
   }, []);
+
+  if (!isMounted) return null;
+
+  const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
+  const closeMenu = () => setIsMenuOpen(false);
 
   const languageOptions = [
     { key: 'EN', value: TypeLanguage.EN },
@@ -54,41 +58,77 @@ const Header = () => {
     setCurrentLang(lang);
     setIsDropdownOpen(false);
   };
-
-  if (!isMounted) {
-    return null;
-  }
+  
+  const navLinks = [
+    { href: '/#home', label: trans.header.home },
+    { href: '/blog', label: trans.header.blog},
+    { href: '/#features', label: trans.header.features},
+    { href: '/#food', label: trans.header.food },
+  ]
 
   return (
-    <HeaderContainer>
-      <Logo>
-        <Image src={Images.common.logo} alt="logo" width={80} height={80} />
-      </Logo>
-      <Nav>
-        <NavItem>
-          <Link href="/blog">
-            <NavItemText data-hover={trans.header.blog}>{trans.header.blog}</NavItemText>
+    <>
+      <HeaderContainer scrolled={scrolled}>
+        <Nav>
+          <Link href="/">
+            <Logo>
+              <Image src={Images.common.logo} alt="logo" width={60} height={60} />
+            </Logo>
           </Link>
-        </NavItem>
-        <NavItem>
-          <NavItemText data-hover={trans.header.food}>{trans.header.food}</NavItemText>
-        </NavItem>
-      </Nav>
-      <LanguageButton onClick={() => setIsDropdownOpen(!isDropdownOpen)}>
-        {LANGUAGE_MAP[currentLang as keyof typeof LANGUAGE_MAP]}
-        <LanguageDropdown data-is-open={isDropdownOpen}>
-          {languageOptions.map(({ key, value }) => (
-            <LanguageOption 
-              key={key}
-              onClick={() => handleLanguageChange(value)}
-            >
-              {key}
-            </LanguageOption>
-          ))}
-        </LanguageDropdown>
-      </LanguageButton>
-    </HeaderContainer>
-  );
-};
+          
+          <NavLinks isOpen={isMenuOpen}>
+            {navLinks.map((link) => (
+              <NavItem key={link.href}> 
+                <Link key={link.href} href={link.href} passHref>
+                  <NavItemText scrolled={scrolled} onClick={closeMenu} data-hover={link.label}>
+                    {link.label}
+                  </NavItemText>
+                </Link>
+              </NavItem>
+            ))}
+          </NavLinks>
 
-export default Header;
+          <RightSection>
+            <Link href="/login" passHref>
+              <LoginButton scrolled={scrolled}>
+                Đăng nhập
+              </LoginButton>
+            </Link>
+            
+            <LanguageButton 
+              scrolled={scrolled}
+              onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+            >
+              {LANGUAGE_MAP[currentLang as keyof typeof LANGUAGE_MAP]}
+              <LanguageDropdown isOpen={isDropdownOpen}>
+                {languageOptions.map(({ key, value }, index) => (
+                  <LanguageOption 
+                    key={key}
+                    onClick={() => handleLanguageChange(value)}
+                    index={index}
+                    isOpen={isDropdownOpen}
+                  >
+                    {key}
+                  </LanguageOption>
+                ))}
+              </LanguageDropdown>
+            </LanguageButton>
+            
+            <MobileMenuButton 
+              scrolled={scrolled} 
+              isOpen={isMenuOpen} 
+              onClick={toggleMenu}
+              aria-label="Toggle menu"
+            >
+              <span></span>
+              <span></span>
+              <span></span>
+            </MobileMenuButton>
+          </RightSection>
+        </Nav>
+      </HeaderContainer>
+      
+      <Overlay isOpen={isMenuOpen} onClick={closeMenu} />
+    </>
+  );
+}
