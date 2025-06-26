@@ -1,10 +1,9 @@
 import { Geist, Geist_Mono } from "next/font/google";
 import "../styles/global.css";
-import Header from "@/components/Header";
-import Footer from "@/components/Footer";
 import StyledComponentsRegistry from '@/lib/registry';
 import type { Metadata } from 'next';
 import { MainLayout, MainContent } from "../components/HomePage/indexStyle";
+import Providers from '@/components/Providers';
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -27,14 +26,16 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="vi">
-      <body className={`${geistSans.variable} ${geistMono.variable}`}>
+    <html lang="vi" suppressHydrationWarning>
+      <body className={`${geistSans.variable} ${geistMono.variable} geist_e531`} suppressHydrationWarning>
         <StyledComponentsRegistry>
-          <MainLayout>
-            <MainContent>
-              {children}
-            </MainContent>
-          </MainLayout>
+          <Providers>
+            <MainLayout>
+              <MainContent>
+                {children}
+              </MainContent>
+            </MainLayout>
+          </Providers>
         </StyledComponentsRegistry>
       </body>
     </html>
