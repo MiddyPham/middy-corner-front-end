@@ -15,10 +15,10 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-export const metadata: Metadata = {
-  title: 'Blog Corner - Nơi chia sẻ kiến thức',
-  description: 'Khám phá những bài viết đặc sắc, chia sẻ kiến thức và kết nối với cộng đồng qua những câu chuyện thú vị và insights có giá trị',
-};
+// export const metadata: Metadata = {
+//   title: 'Blog Corner - Nơi chia sẻ kiến thức',
+//   description: 'Khám phá những bài viết đặc sắc, chia sẻ kiến thức và kết nối với cộng đồng qua những câu chuyện thú vị và insights có giá trị',
+// };
 
 export default function RootLayout({
   children,

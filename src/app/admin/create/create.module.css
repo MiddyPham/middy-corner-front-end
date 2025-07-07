@@ -1,49 +1,99 @@
+@keyframes bounce {
+  0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+  40% { transform: translateY(-5px); }
+  60% { transform: translateY(-3px); }
+}
+
+@keyframes wiggle {
+  0%, 100% { transform: rotate(0deg); }
+  25% { transform: rotate(-1deg); }
+  75% { transform: rotate(1deg); }
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  10%, 30%, 50%, 70%, 90% { transform: translateX(-2px); }
+  20%, 40%, 60%, 80% { transform: translateX(2px); }
+}
+
 .createContainer {
   min-height: 100vh;
-  background: #f8f9fa;
+  background: #ffffff;
+  position: relative;
+}
+
+.createContainer::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: 
+    radial-gradient(circle at 20% 80%, #f0f0f0 0%, transparent 50%),
+    radial-gradient(circle at 80% 20%, #e8e8e8 0%, transparent 50%);
 }
 
 .createHeader {
-  background: white;
-  padding: 1rem 2rem;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  background: #ffffff;
+  padding: 1.5rem 2rem;
+  border-bottom: 4px solid #000000;
+  box-shadow: 0 8px 0px #333333;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  position: relative;
+  z-index: 10;
 }
 
 .headerTitle {
-  font-size: 1.5rem;
-  font-weight: 700;
-  color: #333;
+  font-size: 2rem;
+  font-weight: 800;
+  color: #000000;
   margin: 0;
+  text-shadow: 2px 2px 0px #333333;
 }
 
 .backButton {
-  background: #6c757d;
-  color: white;
+  background: #333333;
+  color: #ffffff;
   text-decoration: none;
-  padding: 0.5rem 1rem;
-  border-radius: 5px;
-  font-size: 0.9rem;
+  padding: 0.8rem 1.5rem;
+  border: 3px solid #000000;
+  border-radius: 15px;
+  font-size: 1rem;
+  font-weight: 800;
   transition: all 0.3s ease;
+  box-shadow: 4px 4px 0px #666666;
 }
 
 .backButton:hover {
-  background: #5a6268;
+  transform: translateY(-3px);
+  box-shadow: 6px 6px 0px #666666;
+  animation: bounce 0.5s ease;
+}
+
+.backButton:active {
+  transform: translateY(-1px);
+  box-shadow: 2px 2px 0px #666666;
 }
 
 .createContent {
   max-width: 1200px;
   margin: 0 auto;
   padding: 2rem;
+  position: relative;
+  z-index: 5;
 }
 
 .formContainer {
-  background: white;
-  border-radius: 15px;
-  padding: 2rem;
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  background: #ffffff;
+  border-radius: 20px;
+  padding: 2.5rem;
+  border: 4px solid #000000;
+  box-shadow: 
+    8px 8px 0px #333333,
+    inset 0 0 0 2px #ffffff;
 }
 
 .formSection {
@@ -51,12 +101,13 @@
 }
 
 .sectionTitle {
-  font-size: 1.3rem;
-  font-weight: 600;
-  color: #333;
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: #000000;
   margin-bottom: 1rem;
   padding-bottom: 0.5rem;
-  border-bottom: 2px solid #f8f9fa;
+  border-bottom: 3px solid #000000;
+  text-shadow: 1px 1px 0px #333333;
 }
 
 .formGroup {
@@ -65,61 +116,81 @@
 
 .label {
   display: block;
-  font-weight: 600;
-  color: #333;
+  font-weight: 800;
+  color: #000000;
   margin-bottom: 0.5rem;
+  text-shadow: 1px 1px 0px #333333;
 }
 
 .input {
   width: 100%;
-  padding: 0.75rem;
-  border: 2px solid #e9ecef;
-  border-radius: 8px;
+  padding: 1rem;
+  border: 3px solid #000000;
+  border-radius: 15px;
   font-size: 1rem;
+  font-weight: 600;
   transition: all 0.3s ease;
   box-sizing: border-box;
+  box-shadow: 4px 4px 0px #333333;
 }
 
 .input:focus {
   outline: none;
-  border-color: #ff5678;
-  box-shadow: 0 0 0 3px rgba(255, 86, 120, 0.1);
+  border-color: #000000;
+  box-shadow: 6px 6px 0px #333333;
+  transform: translateY(-2px);
+}
+
+.input.error {
+  border-color: #ff0000;
+  animation: shake 0.5s ease;
 }
 
 .textarea {
   width: 100%;
-  padding: 0.75rem;
-  border: 2px solid #e9ecef;
-  border-radius: 8px;
+  padding: 1rem;
+  border: 3px solid #000000;
+  border-radius: 15px;
   font-size: 1rem;
-  min-height: 100px;
+  font-weight: 600;
+  min-height: 120px;
   resize: vertical;
   transition: all 0.3s ease;
   box-sizing: border-box;
   font-family: inherit;
+  box-shadow: 4px 4px 0px #333333;
 }
 
 .textarea:focus {
   outline: none;
-  border-color: #ff5678;
-  box-shadow: 0 0 0 3px rgba(255, 86, 120, 0.1);
+  border-color: #000000;
+  box-shadow: 6px 6px 0px #333333;
+  transform: translateY(-2px);
+}
+
+.textarea.error {
+  border-color: #ff0000;
+  animation: shake 0.5s ease;
 }
 
 .select {
   width: 100%;
-  padding: 0.75rem;
-  border: 2px solid #e9ecef;
-  border-radius: 8px;
+  padding: 1rem;
+  border: 3px solid #000000;
+  border-radius: 15px;
   font-size: 1rem;
-  background: white;
+  font-weight: 600;
+  background: #ffffff;
   transition: all 0.3s ease;
   box-sizing: border-box;
+  box-shadow: 4px 4px 0px #333333;
 }
 
 .select:focus {
   outline: none;
-  border-color: #ff5678;
-  box-shadow: 0 0 0 3px rgba(255, 86, 120, 0.1);
+  border-color: #000000;
+  box-shadow: 6px 6px 0px #333333;
+  transform: translateY(-2px);
 }
 
 .radioGroup {
@@ -133,25 +204,31 @@
   align-items: center;
   gap: 0.5rem;
   cursor: pointer;
-  font-weight: 500;
+  font-weight: 800;
+  color: #000000;
 }
 
 .radioInput {
   margin: 0;
+  transform: scale(1.5);
 }
 
 .fileUpload {
-  border: 2px dashed #e9ecef;
-  border-radius: 8px;
+  border: 3px dashed #000000;
+  border-radius: 15px;
   padding: 2rem;
   text-align: center;
   transition: all 0.3s ease;
   cursor: pointer;
+  box-shadow: 4px 4px 0px #333333;
 }
 
 .fileUpload:hover {
-  border-color: #ff5678;
-  background: #fff5f6;
+  border-color: #000000;
+  background: #f0f0f0;
+  transform: translateY(-3px);
+  box-shadow: 6px 6px 0px #333333;
+  animation: bounce 0.5s ease;
 }
 
 .fileInput {
@@ -159,8 +236,9 @@
 }
 
 .uploadText {
-  color: #666;
+  color: #333333;
   font-size: 1rem;
+  font-weight: 600;
 }
 
 .imagePreview {
@@ -171,45 +249,60 @@
 .previewImage {
   max-width: 200px;
   max-height: 200px;
-  border-radius: 8px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  border-radius: 15px;
+  border: 3px solid #000000;
+  box-shadow: 4px 4px 0px #333333;
 }
 
 .tagInput {
   display: flex;
   flex-wrap: wrap;
   gap: 0.5rem;
-  padding: 0.5rem;
-  border: 2px solid #e9ecef;
-  border-radius: 8px;
-  min-height: 50px;
+  padding: 1rem;
+  border: 3px solid #000000;
+  border-radius: 15px;
+  min-height: 60px;
   transition: all 0.3s ease;
+  box-shadow: 4px 4px 0px #333333;
 }
 
 .tagInput:focus-within {
-  border-color: #ff5678;
-  box-shadow: 0 0 0 3px rgba(255, 86, 120, 0.1);
+  border-color: #000000;
+  box-shadow: 6px 6px 0px #333333;
+  transform: translateY(-2px);
 }
 
 .tag {
-  background: #ff5678;
-  color: white;
-  padding: 0.25rem 0.75rem;
+  background: #000000;
+  color: #ffffff;
+  padding: 0.5rem 1rem;
+  border: 2px solid #000000;
   border-radius: 15px;
   font-size: 0.9rem;
+  font-weight: 800;
   display: flex;
   align-items: center;
   gap: 0.5rem;
+  box-shadow: 3px 3px 0px #333333;
 }
 
 .removeTag {
-  background: none;
-  border: none;
-  color: white;
+  background: #ffffff;
+  border: 2px solid #000000;
+  color: #000000;
   cursor: pointer;
   font-size: 1.2rem;
-  padding: 0;
+  font-weight: 800;
+  padding: 0.2rem 0.5rem;
+  border-radius: 50%;
   line-height: 1;
+  transition: all 0.3s ease;
+}
+
+.removeTag:hover {
+  background: #000000;
+  color: #ffffff;
+  animation: bounce 0.3s ease;
 }
 
 .tagInputField {
@@ -218,6 +311,7 @@
   flex: 1;
   min-width: 100px;
   font-size: 1rem;
+  font-weight: 600;
   background: transparent;
 }
 
@@ -226,97 +320,122 @@
   gap: 1rem;
   margin-top: 2rem;
   padding-top: 2rem;
-  border-top: 2px solid #f8f9fa;
+  border-top: 3px solid #000000;
 }
 
 .saveButton {
-  background: linear-gradient(45deg, #ff5678, #ff8a9e);
-  color: white;
-  border: none;
+  background: #000000;
+  color: #ffffff;
+  border: 3px solid #000000;
   padding: 1rem 2rem;
-  border-radius: 8px;
-  font-weight: 600;
+  border-radius: 15px;
+  font-weight: 800;
   cursor: pointer;
   transition: all 0.3s ease;
-  font-size: 1rem;
+  box-shadow: 4px 4px 0px #333333;
 }
 
 .saveButton:hover {
+  transform: translateY(-5px);
+  box-shadow: 6px 6px 0px #333333;
+  animation: bounce 0.5s ease;
+}
+
+.saveButton:active {
   transform: translateY(-2px);
-  box-shadow: 0 10px 20px rgba(255, 86, 120, 0.3);
+  box-shadow: 2px 2px 0px #333333;
 }
 
 .previewButton {
-  background: #28a745;
-  color: white;
-  border: none;
+  background: #333333;
+  color: #ffffff;
+  border: 3px solid #000000;
   padding: 1rem 2rem;
-  border-radius: 8px;
-  font-weight: 600;
+  border-radius: 15px;
+  font-weight: 800;
   cursor: pointer;
   transition: all 0.3s ease;
-  font-size: 1rem;
+  box-shadow: 4px 4px 0px #666666;
 }
 
 .previewButton:hover {
-  background: #218838;
+  transform: translateY(-5px);
+  box-shadow: 6px 6px 0px #666666;
+  animation: bounce 0.5s ease;
+}
+
+.previewButton:active {
   transform: translateY(-2px);
+  box-shadow: 2px 2px 0px #666666;
 }
 
 .draftButton {
-  background: #ffc107;
-  color: #212529;
-  border: none;
+  background: #ffffff;
+  color: #000000;
+  border: 3px solid #000000;
   padding: 1rem 2rem;
-  border-radius: 8px;
-  font-weight: 600;
+  border-radius: 15px;
+  font-weight: 800;
   cursor: pointer;
   transition: all 0.3s ease;
-  font-size: 1rem;
+  box-shadow: 4px 4px 0px #333333;
 }
 
 .draftButton:hover {
-  background: #e0a800;
+  background: #000000;
+  color: #ffffff;
+  transform: translateY(-5px);
+  box-shadow: 6px 6px 0px #333333;
+  animation: bounce 0.5s ease;
+}
+
+.draftButton:active {
   transform: translateY(-2px);
+  box-shadow: 2px 2px 0px #333333;
 }
 
 .cancelButton {
-  background: #6c757d;
-  color: white;
+  background: #666666;
+  color: #ffffff;
   text-decoration: none;
   padding: 1rem 2rem;
-  border-radius: 8px;
-  font-weight: 600;
+  border: 3px solid #000000;
+  border-radius: 15px;
+  font-weight: 800;
   transition: all 0.3s ease;
-  font-size: 1rem;
-  display: inline-block;
+  box-shadow: 4px 4px 0px #333333;
 }
 
 .cancelButton:hover {
-  background: #5a6268;
-  transform: translateY(-2px);
+  transform: translateY(-5px);
+  box-shadow: 6px 6px 0px #333333;
+  animation: bounce 0.5s ease;
 }
 
-/* Responsive design */
+.cancelButton:active {
+  transform: translateY(-2px);
+  box-shadow: 2px 2px 0px #333333;
+}
+
 @media (max-width: 768px) {
   .createHeader {
+    padding: 1rem;
     flex-direction: column;
     gap: 1rem;
-    text-align: center;
   }
-  
+
   .createContent {
     padding: 1rem;
   }
-  
+
   .formContainer {
-    padding: 1rem;
+    padding: 1.5rem;
   }
-  
+
   .buttonGroup {
     flex-direction: column;
   }
-  
+
   .radioGroup {
     flex-direction: column;
     gap: 0.5rem;
@@ -325,36 +444,40 @@
 
 .contentTextarea {
   width: 100%;
-  padding: 0.75rem;
-  border: 2px solid #e9ecef;
-  border-radius: 8px;
+  padding: 1rem;
+  border: 3px solid #000000;
+  border-radius: 15px;
   font-size: 1rem;
-  min-height: 300px;
+  font-weight: 600;
+  min-height: 200px;
   resize: vertical;
   transition: all 0.3s ease;
   box-sizing: border-box;
   font-family: inherit;
-  line-height: 1.6;
+  box-shadow: 4px 4px 0px #333333;
 }
 
 .contentTextarea:focus {
   outline: none;
-  border-color: #ff5678;
-  box-shadow: 0 0 0 3px rgba(255, 86, 120, 0.1);
+  border-color: #000000;
+  box-shadow: 6px 6px 0px #333333;
+  transform: translateY(-2px);
 }
 
 .contentHelp {
-  margin-top: 1rem;
+  margin-top: 0.5rem;
   padding: 1rem;
-  background: #f8f9fa;
-  border-radius: 8px;
-  border-left: 4px solid #ff5678;
+  background: #f8f8f8;
+  border: 2px solid #000000;
+  border-radius: 10px;
+  font-size: 0.9rem;
+  color: #333333;
+  box-shadow: 3px 3px 0px #333333;
 }
 
 .contentHelp p {
   margin: 0 0 0.5rem 0;
   font-weight: 600;
-  color: #333;
 }
 
 .contentHelp ul {
@@ -364,6 +487,5 @@
 
 .contentHelp li {
   margin-bottom: 0.25rem;
-  color: #666;
-  font-size: 0.9rem;
+  font-weight: 500;
 } 

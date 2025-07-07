@@ -1,11 +1,52 @@
 'use client'
 
-import styled from "styled-components";
+import styled, { keyframes } from "styled-components";
+
+export const bounce = keyframes`
+  0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+  40% { transform: translateY(-10px); }
+  60% { transform: translateY(-5px); }
+`;
+
+export const wiggle = keyframes`
+  0%, 100% { transform: rotate(0deg); }
+  25% { transform: rotate(-2deg); }
+  75% { transform: rotate(2deg); }
+`;
+
+export const slideIn = keyframes`
+  from { 
+    opacity: 0; 
+    transform: translateY(30px); 
+  }
+  to { 
+    opacity: 1; 
+    transform: translateY(0); 
+  }
+`;
+
+export const shake = keyframes`
+  0%, 100% { transform: translateX(0); }
+  10%, 30%, 50%, 70%, 90% { transform: translateX(-2px); }
+  20%, 40%, 60%, 80% { transform: translateX(2px); }
+`;
 
 export const LandingContainer = styled.div`
   min-height: 100vh;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: #ffffff;
   overflow-x: hidden;
+  
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: 
+      radial-gradient(circle at 20% 80%, #f0f0f0 0%, transparent 50%),
+      radial-gradient(circle at 80% 20%, #e8e8e8 0%, transparent 50%);
+  }
 `;
 
 export const HeroSection = styled.section`
@@ -15,35 +56,32 @@ export const HeroSection = styled.section`
   justify-content: center;
   position: relative;
   padding: 0 2rem;
-  
-  &::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="25" cy="25" r="1" fill="white" opacity="0.1"/><circle cx="75" cy="75" r="1" fill="white" opacity="0.1"/><circle cx="50" cy="10" r="0.5" fill="white" opacity="0.1"/><circle cx="10" cy="60" r="0.5" fill="white" opacity="0.1"/><circle cx="90" cy="40" r="0.5" fill="white" opacity="0.1"/></pattern></defs><rect width="100" height="100" fill="url(%23grain)"/></svg>');
-    opacity: 0.3;
-  }
 `;
 
 export const HeroContent = styled.div`
   text-align: center;
-  color: white;
+  color: #000000;
   max-width: 800px;
   z-index: 1;
-  animation: fadeInUp 1s ease-out;
+  animation: ${slideIn} 1s ease-out;
+  background: #ffffff;
+  border: 5px solid #000000;
+  border-radius: 20px;
+  padding: 3rem;
+  box-shadow: 
+    8px 8px 0px #333333,
+    inset 0 0 0 2px #ffffff;
   
-  @keyframes fadeInUp {
-    from {
-      opacity: 0;
-      transform: translateY(30px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
+  &::before {
+    content: '';
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    right: 10px;
+    bottom: 10px;
+    border: 2px solid #000000;
+    border-radius: 15px;
+    pointer-events: none;
   }
 `;
 
@@ -51,40 +89,44 @@ export const HeroTitle = styled.h1`
   font-size: clamp(2.5rem, 8vw, 4.5rem);
   font-weight: 800;
   margin-bottom: 1.5rem;
-  background: linear-gradient(45deg, #fff, #f0f0f0);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+  color: #000000;
   line-height: 1.2;
+  text-shadow: 2px 2px 0px #333333;
 `;
 
 export const HeroSubtitle = styled.p`
   font-size: clamp(1.1rem, 3vw, 1.5rem);
   margin-bottom: 2.5rem;
-  opacity: 0.9;
+  color: #333333;
   line-height: 1.6;
   max-width: 600px;
   margin-left: auto;
   margin-right: auto;
+  font-weight: 600;
 `;
 
 export const CTAButton = styled.button`
-  background: linear-gradient(45deg, #ff5678, #ff8a9e);
-  color: white;
-  border: none;
+  background: #000000;
+  color: #ffffff;
+  border: 4px solid #000000;
   padding: 1rem 2.5rem;
   font-size: 1.1rem;
-  font-weight: 600;
-  border-radius: 50px;
+  font-weight: 800;
+  border-radius: 15px;
   cursor: pointer;
   transition: all 0.3s ease;
-  box-shadow: 0 10px 30px rgba(255, 86, 120, 0.3);
+  box-shadow: 0 10px 0px #333333;
   position: relative;
   overflow: hidden;
   
   &:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 15px 40px rgba(255, 86, 120, 0.4);
+    transform: translateY(-5px);
+    box-shadow: 0 15px 0px #333333;
+  }
+  
+  &:active {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 0px #333333;
   }
   
   &::before {
@@ -121,33 +163,27 @@ export const FloatingElement = styled.div<{
   position: absolute;
   width: ${(props) => props.size}px;
   height: ${(props) => props.size}px;
-  background: rgba(255, 255, 255, 0.1);
+  background: #333333;
+  border: 3px solid #000000;
   border-radius: 50%;
-  animation: float ${(props) => props.duration}s ease-in-out infinite;
+  animation: ${bounce} ${(props) => props.duration}s ease-in-out infinite;
   animation-delay: ${(props) => props.delay}s;
-  
-  @keyframes float {
-    0%, 100% {
-      transform: translateY(0px) rotate(0deg);
-    }
-    50% {
-      transform: translateY(-20px) rotate(180deg);
-    }
-  }
 `;
 
 export const FeaturesSection = styled.section`
   padding: 5rem 2rem;
-  background: white;
+  background: #ffffff;
   position: relative;
+  border-top: 5px solid #000000;
 `;
 
 export const SectionTitle = styled.h2`
   text-align: center;
   font-size: clamp(2rem, 5vw, 3rem);
   margin-bottom: 3rem;
-  color: #333;
-  font-weight: 700;
+  color: #000000;
+  font-weight: 800;
+  text-shadow: 2px 2px 0px #333333;
 `;
 
 export const FeaturesGrid = styled.div`
@@ -159,47 +195,70 @@ export const FeaturesGrid = styled.div`
 `;
 
 export const FeatureCard = styled.div`
-  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+  background: #ffffff;
   padding: 2.5rem;
   border-radius: 20px;
   text-align: center;
   transition: all 0.3s ease;
-  border: 1px solid rgba(0,0,0,0.05);
+  border: 4px solid #000000;
+  box-shadow: 
+    8px 8px 0px #333333,
+    inset 0 0 0 2px #ffffff;
   
   &:hover {
     transform: translateY(-10px);
-    box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+    box-shadow: 
+      12px 12px 0px #333333,
+      inset 0 0 0 2px #ffffff;
+  }
+  
+  &::before {
+    content: '';
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    right: 10px;
+    bottom: 10px;
+    border: 2px solid #000000;
+    border-radius: 15px;
+    pointer-events: none;
   }
 `;
 
 export const FeatureIcon = styled.div`
   width: 80px;
   height: 80px;
-  background: linear-gradient(45deg, #667eea, #764ba2);
+  background: #000000;
+  border: 4px solid #000000;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
   margin: 0 auto 1.5rem;
   font-size: 2rem;
-  color: white;
+  color: #ffffff;
+  box-shadow: 4px 4px 0px #333333;
+  animation: ${wiggle} 3s ease-in-out infinite;
 `;
 
 export const FeatureTitle = styled.h3`
   font-size: 1.5rem;
   margin-bottom: 1rem;
-  color: #333;
-  font-weight: 600;
+  color: #000000;
+  font-weight: 800;
+  text-shadow: 1px 1px 0px #333333;
 `;
 
 export const FeatureDescription = styled.p`
-  color: #666;
+  color: #333333;
   line-height: 1.6;
+  font-weight: 600;
 `;
 
 export const BlogPreviewSection = styled.section`
   padding: 5rem 2rem;
-  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+  background: #f8f8f8;
+  border-top: 5px solid #000000;
 `;
 
 export const BlogGrid = styled.div`
@@ -211,21 +270,27 @@ export const BlogGrid = styled.div`
 `;
 
 export const BlogCard = styled.div`
-  background: white;
+  background: #ffffff;
   border-radius: 20px;
   overflow: hidden;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+  border: 4px solid #000000;
+  box-shadow: 
+    8px 8px 0px #333333,
+    inset 0 0 0 2px #ffffff;
   transition: all 0.3s ease;
   
   &:hover {
     transform: translateY(-5px);
-    box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+    box-shadow: 
+      12px 12px 0px #333333,
+      inset 0 0 0 2px #ffffff;
   }
 `;
 
 export const BlogImage = styled.div`
   height: 200px;
-  background: linear-gradient(45deg, #667eea, #764ba2);
+  background: #333333;
+  border-bottom: 4px solid #000000;
   position: relative;
   overflow: hidden;
   
@@ -236,7 +301,12 @@ export const BlogImage = styled.div`
     left: 0;
     right: 0;
     bottom: 0;
-    background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="blog-pattern" width="20" height="20" patternUnits="userSpaceOnUse"><circle cx="10" cy="10" r="2" fill="white" opacity="0.3"/></pattern></defs><rect width="100" height="100" fill="url(%23blog-pattern)"/></svg>');
+    background-image: 
+      radial-gradient(circle at 25% 25%, #ffffff 2px, transparent 2px),
+      radial-gradient(circle at 75% 75%, #ffffff 3px, transparent 3px),
+      radial-gradient(circle at 50% 50%, #ffffff 1px, transparent 1px);
+    background-size: 50px 50px, 60px 60px, 40px 40px;
+    opacity: 0.3;
   }
 `;
 
@@ -247,15 +317,17 @@ export const BlogContent = styled.div`
 export const BlogTitle = styled.h3`
   font-size: 1.3rem;
   margin-bottom: 0.5rem;
-  color: #333;
-  font-weight: 600;
+  color: #000000;
+  font-weight: 800;
+  text-shadow: 1px 1px 0px #333333;
 `;
 
 export const BlogExcerpt = styled.p`
-  color: #666;
+  color: #333333;
   font-size: 0.9rem;
   line-height: 1.5;
   margin-bottom: 1rem;
+  font-weight: 600;
 `;
 
 export const BlogMeta = styled.div`
@@ -263,49 +335,81 @@ export const BlogMeta = styled.div`
   justify-content: space-between;
   align-items: center;
   font-size: 0.8rem;
-  color: #999;
+  color: #666666;
+  font-weight: 600;
+  border-top: 2px solid #000000;
+  padding-top: 0.5rem;
 `;
 
 export const CTASection = styled.section`
   padding: 5rem 2rem;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: #000000;
   text-align: center;
-  color: white;
+  color: #ffffff;
+  border-top: 5px solid #333333;
 `;
 
 export const CTAContent = styled.div`
   max-width: 600px;
   margin: 0 auto;
+  background: #ffffff;
+  border: 5px solid #000000;
+  border-radius: 20px;
+  padding: 3rem;
+  box-shadow: 
+    8px 8px 0px #333333,
+    inset 0 0 0 2px #ffffff;
+  
+  &::before {
+    content: '';
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    right: 10px;
+    bottom: 10px;
+    border: 2px solid #000000;
+    border-radius: 15px;
+    pointer-events: none;
+  }
 `;
 
 export const CTATitle = styled.h2`
   font-size: clamp(2rem, 5vw, 3rem);
   margin-bottom: 1.5rem;
-  font-weight: 700;
+  font-weight: 800;
+  color: #000000;
+  text-shadow: 2px 2px 0px #333333;
 `;
 
 export const CTADescription = styled.p`
   font-size: 1.2rem;
   margin-bottom: 2rem;
-  opacity: 0.9;
+  color: #333333;
   line-height: 1.6;
+  font-weight: 600;
 `;
 
 export const SecondaryButton = styled.button`
-  background: transparent;
-  color: white;
-  border: 2px solid white;
+  background: #ffffff;
+  color: #000000;
+  border: 4px solid #000000;
   padding: 1rem 2.5rem;
   font-size: 1.1rem;
-  font-weight: 600;
-  border-radius: 50px;
+  font-weight: 800;
+  border-radius: 15px;
   cursor: pointer;
   transition: all 0.3s ease;
   margin-left: 1rem;
+  box-shadow: 4px 4px 0px #333333;
   
   &:hover {
-    background: white;
-    color: #667eea;
+    transform: translateY(-3px);
+    box-shadow: 6px 6px 0px #333333;
+  }
+  
+  &:active {
+    transform: translateY(-1px);
+    box-shadow: 2px 2px 0px #333333;
   }
 `;
 

@@ -1,41 +1,72 @@
 'use client'
 import { useState, useEffect } from 'react';
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 
+const bounce = keyframes`
+  0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+  40% { transform: translateY(-5px); }
+  60% { transform: translateY(-3px); }
+`;
+
 const AdminContainer = styled.div`
   min-height: 100vh;
-  background: #f8f9fa;
+  background: #ffffff;
+  
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: 
+      radial-gradient(circle at 20% 80%, #f0f0f0 0%, transparent 50%),
+      radial-gradient(circle at 80% 20%, #e8e8e8 0%, transparent 50%);
+  }
 `;
 
 const AdminHeader = styled.header`
-  background: white;
-  padding: 1rem 2rem;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  background: #ffffff;
+  padding: 0 2rem;
+  border-bottom: 4px solid #000000;
+  box-shadow: 0 8px 0px #333333;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  position: relative;
+  z-index: 10;
 `;
 
 const AdminTitle = styled.h1`
-  font-size: 1.5rem;
-  font-weight: 700;
-  color: #333;
+  font-size: 2rem;
+  font-weight: 800;
+  color: #000000;
+  text-shadow: 2px 2px 0px #333333;
 `;
 
 const LogoutButton = styled.button`
-  background: #dc3545;
-  color: white;
-  border: none;
-  padding: 0.5rem 1rem;
-  border-radius: 5px;
+  background: #000000;
+  color: #ffffff;
+  border: 3px solid #000000;
+  padding: 0.8rem 1.5rem;
+  border-radius: 15px;
   cursor: pointer;
-  font-size: 0.9rem;
+  font-size: 1rem;
+  font-weight: 800;
   transition: all 0.3s ease;
+  box-shadow: 4px 4px 0px #333333;
   
   &:hover {
-    background: #c82333;
+    transform: translateY(-3px);
+    box-shadow: 6px 6px 0px #333333;
+    animation: ${bounce} 0.5s ease;
+  }
+  
+  &:active {
+    transform: translateY(-1px);
+    box-shadow: 2px 2px 0px #333333;
   }
 `;
 
@@ -43,6 +74,8 @@ const AdminContent = styled.main`
   max-width: 1200px;
   margin: 0 auto;
   padding: 2rem;
+  position: relative;
+  z-index: 5;
 `;
 
 const DashboardGrid = styled.div`
@@ -53,75 +86,117 @@ const DashboardGrid = styled.div`
 `;
 
 const DashboardCard = styled.div`
-  background: white;
-  padding: 2rem;
-  border-radius: 15px;
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  background: #ffffff;
+  padding: 2.5rem;
+  border-radius: 20px;
+  border: 4px solid #000000;
+  box-shadow: 
+    8px 8px 0px #333333,
+    inset 0 0 0 2px #ffffff;
   text-align: center;
-`;
-
-const CardNumber = styled.div`
-  font-size: 3rem;
-  font-weight: 700;
-  color: #ff5678;
-  margin-bottom: 0.5rem;
-`;
-
-const CardLabel = styled.div`
-  color: #666;
-  font-size: 1.1rem;
-`;
-
-const SectionTitle = styled.h2`
-  font-size: 1.8rem;
-  font-weight: 600;
-  color: #333;
-  margin-bottom: 1.5rem;
-`;
-
-const CreatePostButton = styled(Link)`
-  background: linear-gradient(45deg, #ff5678, #ff8a9e);
-  color: white;
-  text-decoration: none;
-  padding: 1rem 2rem;
-  border-radius: 10px;
-  font-weight: 600;
-  display: inline-block;
-  margin-bottom: 2rem;
   transition: all 0.3s ease;
   
   &:hover {
+    transform: translateY(-10px);
+    box-shadow: 
+      12px 12px 0px #333333,
+      inset 0 0 0 2px #ffffff;
+    animation: ${bounce} 0.5s ease;
+  }
+  
+  &::before {
+    content: '';
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    right: 10px;
+    bottom: 10px;
+    border: 2px solid #000000;
+    border-radius: 15px;
+    pointer-events: none;
+  }
+`;
+
+const CardNumber = styled.div`
+  font-size: 4rem;
+  font-weight: 800;
+  color: #000000;
+  margin-bottom: 0.5rem;
+  text-shadow: 3px 3px 0px #333333;
+`;
+
+const CardLabel = styled.div`
+  color: #333333;
+  font-size: 1.2rem;
+  font-weight: 600;
+`;
+
+const SectionTitle = styled.h2`
+  font-size: 2rem;
+  font-weight: 800;
+  color: #000000;
+  margin-bottom: 1.5rem;
+  text-shadow: 2px 2px 0px #333333;
+`;
+
+const CreatePostButton = styled(Link)`
+  background: #000000;
+  color: #ffffff;
+  text-decoration: none;
+  padding: 1rem 2rem;
+  border: 4px solid #000000;
+  border-radius: 15px;
+  font-weight: 800;
+  display: inline-block;
+  margin-bottom: 2rem;
+  transition: all 0.3s ease;
+  box-shadow: 4px 4px 0px #333333;
+  
+  &:hover {
+    transform: translateY(-5px);
+    box-shadow: 6px 6px 0px #333333;
+    animation: ${bounce} 0.5s ease;
+  }
+  
+  &:active {
     transform: translateY(-2px);
-    box-shadow: 0 10px 20px rgba(255, 86, 120, 0.3);
+    box-shadow: 2px 2px 0px #333333;
   }
 `;
 
 const PostsTable = styled.div`
-  background: white;
-  border-radius: 15px;
+  background: #ffffff;
+  border-radius: 20px;
   overflow: hidden;
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  border: 4px solid #000000;
+  box-shadow: 
+    8px 8px 0px #333333,
+    inset 0 0 0 2px #ffffff;
 `;
 
 const TableHeader = styled.div`
   display: grid;
   grid-template-columns: 1fr 2fr 1fr 1fr 1fr;
-  padding: 1rem 1.5rem;
-  background: #f8f9fa;
-  font-weight: 600;
-  color: #333;
-  border-bottom: 1px solid #e9ecef;
+  padding: 1.5rem;
+  background: #f8f8f8;
+  font-weight: 800;
+  color: #000000;
+  border-bottom: 3px solid #000000;
+  text-shadow: 1px 1px 0px #333333;
 `;
 
 const TableRow = styled.div`
   display: grid;
   grid-template-columns: 1fr 2fr 1fr 1fr 1fr;
-  padding: 1rem 1.5rem;
-  border-bottom: 1px solid #e9ecef;
+  padding: 1.5rem;
+  border-bottom: 2px solid #000000;
   align-items: center;
+  transition: all 0.3s ease;
   
   &:hover {
-    background: #f8f9fa;
+    background: #f0f0f0;
+    transform: translateX(5px);
+    box-shadow: inset 4px 0px 0px #333333;
   }
   
   &:last-child {
@@ -130,28 +205,39 @@ const TableRow = styled.div`
 `;
 
 const ActionButton = styled.button<{ variant?: 'edit' | 'delete' }>`
-  background: ${props => props.variant === 'delete' ? '#dc3545' : '#007bff'};
-  color: white;
-  border: none;
+  background: ${props => props.variant === 'delete' ? '#000000' : '#333333'};
+  color: #ffffff;
+  border: 2px solid #000000;
   padding: 0.5rem 1rem;
-  border-radius: 5px;
+  border-radius: 10px;
   cursor: pointer;
-  font-size: 0.8rem;
+  font-size: 0.9rem;
+  font-weight: 800;
   margin-right: 0.5rem;
   transition: all 0.3s ease;
+  box-shadow: 3px 3px 0px #666666;
   
   &:hover {
-    background: ${props => props.variant === 'delete' ? '#c82333' : '#0056b3'};
+    transform: translateY(-2px);
+    box-shadow: 5px 5px 0px #666666;
+    animation: ${bounce} 0.3s ease;
+  }
+  
+  &:active {
+    transform: translateY(-1px);
+    box-shadow: 2px 2px 0px #666666;
   }
 `;
 
 const StatusBadge = styled.span<{ status: 'published' | 'draft' }>`
-  background: ${props => props.status === 'published' ? '#28a745' : '#ffc107'};
-  color: ${props => props.status === 'published' ? 'white' : '#212529'};
-  padding: 0.25rem 0.75rem;
+  background: ${props => props.status === 'published' ? '#000000' : '#ffffff'};
+  color: ${props => props.status === 'published' ? '#ffffff' : '#000000'};
+  border: 2px solid #000000;
+  padding: 0.5rem 1rem;
   border-radius: 15px;
-  font-size: 0.8rem;
-  font-weight: 600;
+  font-size: 0.9rem;
+  font-weight: 800;
+  box-shadow: 3px 3px 0px #333333;
 `;
 
 // Mock data

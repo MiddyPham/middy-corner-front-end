@@ -1,38 +1,75 @@
-"use client";
+import styled, { keyframes } from "styled-components"; 
 import Link from "next/link";
-import styled from "styled-components";
+
+const bounce = keyframes`
+  0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+  40% { transform: translateY(-5px); }
+  60% { transform: translateY(-3px); }
+`;
+
+const shake = keyframes`
+  0%, 100% { transform: translateX(0); }
+  10%, 30%, 50%, 70%, 90% { transform: translateX(-2px); }
+  20%, 40%, 60%, 80% { transform: translateX(2px); }
+`;
 
 export const CreateContainer = styled.div`
   min-height: 100vh;
-  background: #f8f9fa;
+  background: #ffffff;
+  
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: 
+      radial-gradient(circle at 20% 80%, #f0f0f0 0%, transparent 50%),
+      radial-gradient(circle at 80% 20%, #e8e8e8 0%, transparent 50%);
+  }
 `;
 
 export const CreateHeader = styled.header`
-  background: white;
-  padding: 1rem 2rem;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  background: #ffffff;
+  padding: 0 2rem;
+  border-bottom: 4px solid #000000;
+  box-shadow: 0 8px 0px #333333;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  position: relative;
+  z-index: 10;
 `;
 
 export const HeaderTitle = styled.h1`
-  font-size: 1.5rem;
-  font-weight: 700;
-  color: #333;
+  font-size: 2rem;
+  font-weight: 800;
+  color: #000000;
+  text-shadow: 2px 2px 0px #333333;
 `;
 
 export const BackButton = styled(Link)`
-  background: #6c757d;
-  color: white;
+  background: #333333;
+  color: #ffffff;
   text-decoration: none;
-  padding: 0.5rem 1rem;
-  border-radius: 5px;
-  font-size: 0.9rem;
+  padding: 0.8rem 1.5rem;
+  border: 3px solid #000000;
+  border-radius: 15px;
+  font-size: 1rem;
+  font-weight: 800;
   transition: all 0.3s ease;
+  box-shadow: 4px 4px 0px #666666;
   
   &:hover {
-    background: #5a6268;
+    transform: translateY(-3px);
+    box-shadow: 6px 6px 0px #666666;
+    animation: ${bounce} 0.5s ease;
+  }
+  
+  &:active {
+    transform: translateY(-1px);
+    box-shadow: 2px 2px 0px #666666;
   }
 `;
 
@@ -40,13 +77,18 @@ export const CreateContent = styled.main`
   max-width: 1200px;
   margin: 0 auto;
   padding: 2rem;
+  position: relative;
+  z-index: 5;
 `;
 
 export const FormContainer = styled.form`
-  background: white;
-  border-radius: 15px;
-  padding: 2rem;
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  background: #ffffff;
+  border-radius: 20px;
+  padding: 2.5rem;
+  border: 4px solid #000000;
+  box-shadow: 
+    8px 8px 0px #333333,
+    inset 0 0 0 2px #ffffff;
 `;
 
 export const FormSection = styled.div`
@@ -54,12 +96,13 @@ export const FormSection = styled.div`
 `;
 
 export const SectionTitle = styled.h3`
-  font-size: 1.3rem;
-  font-weight: 600;
-  color: #333;
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: #000000;
   margin-bottom: 1rem;
   padding-bottom: 0.5rem;
-  border-bottom: 2px solid #f8f9fa;
+  border-bottom: 3px solid #000000;
+  text-shadow: 1px 1px 0px #333333;
 `;
 
 export const FormGroup = styled.div`
@@ -68,60 +111,76 @@ export const FormGroup = styled.div`
 
 export const Label = styled.label`
   display: block;
-  font-weight: 600;
-  color: #333;
+  font-weight: 800;
+  color: #000000;
   margin-bottom: 0.5rem;
+  text-shadow: 1px 1px 0px #333333;
 `;
 
 export const Input = styled.input`
   width: 100%;
-  padding: 0.75rem;
-  border: 2px solid #e9ecef;
-  border-radius: 8px;
+  padding: 1rem;
+  border: 3px solid #000000;
+  border-radius: 15px;
   font-size: 1rem;
+  font-weight: 600;
   transition: all 0.3s ease;
-  box-sizing: border-box;
+  box-shadow: 4px 4px 0px #333333;
   
   &:focus {
     outline: none;
-    border-color: #ff5678;
-    box-shadow: 0 0 0 3px rgba(255, 86, 120, 0.1);
+    border-color: #000000;
+    box-shadow: 6px 6px 0px #333333;
+    transform: translateY(-2px);
+  }
+  
+  &.error {
+    border-color: #ff0000;
+    animation: ${shake} 0.5s ease;
   }
 `;
 
 export const Textarea = styled.textarea`
   width: 100%;
-  padding: 0.75rem;
-  border: 2px solid #e9ecef;
-  border-radius: 8px;
+  padding: 1rem;
+  border: 3px solid #000000;
+  border-radius: 15px;
   font-size: 1rem;
-  min-height: 100px;
+  font-weight: 600;
+  min-height: 120px;
   resize: vertical;
   transition: all 0.3s ease;
-  box-sizing: border-box;
-  font-family: inherit;
+  box-shadow: 4px 4px 0px #333333;
   
   &:focus {
     outline: none;
-    border-color: #ff5678;
-    box-shadow: 0 0 0 3px rgba(255, 86, 120, 0.1);
+    border-color: #000000;
+    box-shadow: 6px 6px 0px #333333;
+    transform: translateY(-2px);
+  }
+  
+  &.error {
+    border-color: #ff0000;
+    animation: ${shake} 0.5s ease;
   }
 `;
 
 export const Select = styled.select`
   width: 100%;
-  padding: 0.75rem;
-  border: 2px solid #e9ecef;
-  border-radius: 8px;
+  padding: 1rem;
+  border: 3px solid #000000;
+  border-radius: 15px;
   font-size: 1rem;
-  background: white;
+  font-weight: 600;
+  background: #ffffff;
   transition: all 0.3s ease;
-  box-sizing: border-box;
+  box-shadow: 4px 4px 0px #333333;
   
   &:focus {
     outline: none;
-    border-color: #ff5678;
-    box-shadow: 0 0 0 3px rgba(255, 86, 120, 0.1);
+    border-color: #000000;
+    box-shadow: 6px 6px 0px #333333;
+    transform: translateY(-2px);
   }
 `;
 
@@ -136,24 +195,30 @@ export const RadioLabel = styled.label`
   align-items: center;
   gap: 0.5rem;
   cursor: pointer;
-  font-weight: 500;
+  font-weight: 800;
+  color: #000000;
 `;
 
 export const RadioInput = styled.input`
   margin: 0;
+  transform: scale(1.5);
 `;
 
 export const FileUpload = styled.div`
-  border: 2px dashed #e9ecef;
-  border-radius: 8px;
+  border: 3px dashed #000000;
+  border-radius: 15px;
   padding: 2rem;
   text-align: center;
   transition: all 0.3s ease;
   cursor: pointer;
+  box-shadow: 4px 4px 0px #333333;
   
   &:hover {
-    border-color: #ff5678;
-    background: #fff5f6;
+    border-color: #000000;
+    background: #f0f0f0;
+    transform: translateY(-3px);
+    box-shadow: 6px 6px 0px #333333;
+    animation: ${bounce} 0.5s ease;
   }
 `;
 
@@ -162,8 +227,9 @@ export const FileInput = styled.input`
 `;
 
 export const UploadText = styled.div`
-  color: #666;
+  color: #333333;
   font-size: 1rem;
+  font-weight: 600;
 `;
 
 export const ImagePreview = styled.div`
@@ -174,45 +240,60 @@ export const ImagePreview = styled.div`
 export const PreviewImage = styled.img`
   max-width: 200px;
   max-height: 200px;
-  border-radius: 8px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  border-radius: 15px;
+  border: 3px solid #000000;
+  box-shadow: 4px 4px 0px #333333;
 `;
 
 export const TagInput = styled.div`
   display: flex;
   flex-wrap: wrap;
   gap: 0.5rem;
-  padding: 0.5rem;
-  border: 2px solid #e9ecef;
-  border-radius: 8px;
-  min-height: 50px;
+  padding: 1rem;
+  border: 3px solid #000000;
+  border-radius: 15px;
+  min-height: 60px;
   transition: all 0.3s ease;
+  box-shadow: 4px 4px 0px #333333;
   
   &:focus-within {
-    border-color: #ff5678;
-    box-shadow: 0 0 0 3px rgba(255, 86, 120, 0.1);
+    border-color: #000000;
+    box-shadow: 6px 6px 0px #333333;
+    transform: translateY(-2px);
   }
 `;
 
 export const Tag = styled.span`
-  background: #ff5678;
-  color: white;
-  padding: 0.25rem 0.75rem;
+  background: #000000;
+  color: #ffffff;
+  padding: 0.5rem 1rem;
+  border: 2px solid #000000;
   border-radius: 15px;
   font-size: 0.9rem;
+  font-weight: 800;
   display: flex;
   align-items: center;
   gap: 0.5rem;
+  box-shadow: 3px 3px 0px #333333;
 `;
 
 export const RemoveTag = styled.button`
-  background: none;
-  border: none;
-  color: white;
+  background: #ffffff;
+  border: 2px solid #000000;
+  color: #000000;
   cursor: pointer;
   font-size: 1.2rem;
-  padding: 0;
+  font-weight: 800;
+  padding: 0.2rem 0.5rem;
+  border-radius: 50%;
   line-height: 1;
+  transition: all 0.3s ease;
+  
+  &:hover {
+    background: #000000;
+    color: #ffffff;
+    animation: ${bounce} 0.3s ease;
+  }
 `;
 
 export const TagInputField = styled.input`
@@ -221,6 +302,8 @@ export const TagInputField = styled.input`
   flex: 1;
   min-width: 100px;
   font-size: 1rem;
+  font-weight: 600;
+  background: transparent;
 `;
 
 export const ButtonGroup = styled.div`
@@ -228,68 +311,99 @@ export const ButtonGroup = styled.div`
   gap: 1rem;
   margin-top: 2rem;
   padding-top: 2rem;
-  border-top: 2px solid #f8f9fa;
+  border-top: 3px solid #000000;
 `;
 
 export const SaveButton = styled.button`
-  background: linear-gradient(45deg, #ff5678, #ff8a9e);
-  color: white;
-  border: none;
+  background: #000000;
+  color: #ffffff;
+  border: 3px solid #000000;
   padding: 1rem 2rem;
-  border-radius: 8px;
-  font-weight: 600;
+  border-radius: 15px;
+  font-weight: 800;
   cursor: pointer;
   transition: all 0.3s ease;
+  box-shadow: 4px 4px 0px #333333;
   
   &:hover {
+    transform: translateY(-5px);
+    box-shadow: 6px 6px 0px #333333;
+    animation: ${bounce} 0.5s ease;
+  }
+  
+  &:active {
     transform: translateY(-2px);
-    box-shadow: 0 10px 20px rgba(255, 86, 120, 0.3);
+    box-shadow: 2px 2px 0px #333333;
   }
 `;
 
 export const PreviewButton = styled.button`
-  background: #28a745;
-  color: white;
-  border: none;
+  background: #333333;
+  color: #ffffff;
+  border: 3px solid #000000;
   padding: 1rem 2rem;
-  border-radius: 8px;
-  font-weight: 600;
+  border-radius: 15px;
+  font-weight: 800;
   cursor: pointer;
   transition: all 0.3s ease;
+  box-shadow: 4px 4px 0px #666666;
   
   &:hover {
-    background: #218838;
+    transform: translateY(-5px);
+    box-shadow: 6px 6px 0px #666666;
+    animation: ${bounce} 0.5s ease;
+  }
+  
+  &:active {
     transform: translateY(-2px);
+    box-shadow: 2px 2px 0px #666666;
   }
 `;
 
 export const DraftButton = styled.button`
-  background: #ffc107;
-  color: #212529;
-  border: none;
+  background: #ffffff;
+  color: #000000;
+  border: 3px solid #000000;
   padding: 1rem 2rem;
-  border-radius: 8px;
-  font-weight: 600;
+  border-radius: 15px;
+  font-weight: 800;
   cursor: pointer;
   transition: all 0.3s ease;
+  box-shadow: 4px 4px 0px #333333;
   
   &:hover {
-    background: #e0a800;
+    background: #000000;
+    color: #ffffff;
+    transform: translateY(-5px);
+    box-shadow: 6px 6px 0px #333333;
+    animation: ${bounce} 0.5s ease;
+  }
+  
+  &:active {
     transform: translateY(-2px);
+    box-shadow: 2px 2px 0px #333333;
   }
 `;
 
 export const CancelButton = styled(Link)`
-  background: #6c757d;
-  color: white;
+  background: #666666;
+  color: #ffffff;
   text-decoration: none;
   padding: 1rem 2rem;
-  border-radius: 8px;
-  font-weight: 600;
+  border: 3px solid #000000;
+  border-radius: 15px;
+  font-weight: 800;
   transition: all 0.3s ease;
+  box-shadow: 4px 4px 0px #333333;
   
   &:hover {
-    background: #5a6268;
+    transform: translateY(-5px);
+    box-shadow: 6px 6px 0px #333333;
+    animation: ${bounce} 0.5s ease;
+  }
+  
+  &:active {
     transform: translateY(-2px);
+    box-shadow: 2px 2px 0px #333333;
   }
 `;

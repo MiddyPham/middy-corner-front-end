@@ -1,4 +1,4 @@
-import Logo from '../../public/assets/images/header/logo.png';
+import Logo from '../../public/assets/images/header/logo-primary.png';
 
 const Images = {
     common: {

@@ -1,373 +1,267 @@
-'use client'
-import { useState } from 'react';
-import styled from 'styled-components';
-import Link from 'next/link';
-import { useRouter } from 'next/navigation';
+"use client";
+import { useRef, useState } from "react";
+import { useRouter } from "next/navigation";
+import { useForm } from "react-hook-form";
+import { loginAction } from "./actions";
+import TypingAnimation from "./components/TypingAnimation";
+import {
+  LoginContainer,
+  MatrixRain,
+  MatrixColumn,
+  ParticleSystem,
+  Particle,
+  LoginCard,
+  LoginHeader,
+  LoginSubtitle,
+  Form,
+  FormGroup,
+  Label,
+  Input,
+  SubmitButton,
+  BackLink,
+  ErrorMessage,
+  BackgroundPattern,
+  PatternCircle,
+  PatternSquare,
+  PatternTriangle,
+  PatternLine,
+  ScribbleLine,
+  CurvedLine,
+  ZigzagLine,
+  DoodleCircle,
+  WavyLine,
+} from "./loginStyle";
 
-const LoginContainer = styled.div`
-  min-height: 100vh;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 2rem;
-  position: relative;
-  overflow: hidden;
-  
-  &::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="25" cy="25" r="1" fill="white" opacity="0.1"/><circle cx="75" cy="75" r="1" fill="white" opacity="0.1"/><circle cx="50" cy="10" r="0.5" fill="white" opacity="0.1"/><circle cx="10" cy="60" r="0.5" fill="white" opacity="0.1"/><circle cx="90" cy="40" r="0.5" fill="white" opacity="0.1"/></pattern></defs><rect width="100" height="100" fill="url(%23grain)"/></svg>');
-    opacity: 0.3;
-  }
-`;
-
-const FloatingElements = styled.div`
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  pointer-events: none;
-  z-index: 0;
-`;
-
-const FloatingElement = styled.div<{ delay: number; duration: number; size: number }>`
-  position: absolute;
-  width: ${props => props.size}px;
-  height: ${props => props.size}px;
-  background: rgba(255, 255, 255, 0.1);
-  border-radius: 50%;
-  animation: float ${props => props.duration}s ease-in-out infinite;
-  animation-delay: ${props => props.delay}s;
-  
-  @keyframes float {
-    0%, 100% {
-      transform: translateY(0px) rotate(0deg);
-    }
-    50% {
-      transform: translateY(-20px) rotate(180deg);
-    }
-  }
-`;
-
-const LoginCard = styled.div`
-  background: rgba(255, 255, 255, 0.95);
-  backdrop-filter: blur(20px);
-  border-radius: 25px;
-  padding: 3.5rem;
-  box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15);
-  width: 100%;
-  max-width: 500px;
-  position: relative;
-  overflow: hidden;
-  z-index: 1;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  
-  &::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 5px;
-    background: linear-gradient(45deg, #ff5678, #ff8a9e, #667eea, #764ba2);
-    background-size: 300% 300%;
-    animation: gradientShift 3s ease infinite;
-  }
-  
-  @keyframes gradientShift {
-    0%, 100% {
-      background-position: 0% 50%;
-    }
-    50% {
-      background-position: 100% 50%;
-    }
-  }
-  
-  &::after {
-    content: '';
-    position: absolute;
-    top: -50%;
-    left: -50%;
-    width: 200%;
-    height: 200%;
-    background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
-    animation: rotate 20s linear infinite;
-  }
-  
-  @keyframes rotate {
-    from {
-      transform: rotate(0deg);
-    }
-    to {
-      transform: rotate(360deg);
-    }
-  }
-`;
-
-const LoginHeader = styled.div`
-  text-align: center;
-  margin-bottom: 1.5rem;
-  position: relative;
-  z-index: 2;
-`;
-
-const LoginTitle = styled.h1`
-  font-size: 1.5rem;
-  font-weight: 800;
-  background: linear-gradient(45deg, #333, #666);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  margin-bottom: 0.5rem;
-`;
-
-const LoginSubtitle = styled.p`
-  color: #666;
-  font-size: 1.1rem;
-  line-height: 1.6;
-`;
-
-const Form = styled.form`
-  display: flex;
-  flex-direction: column;
-  gap: 2rem;
-  position: relative;
-  z-index: 2;
-`;
-
-const FormGroup = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-`;
-
-const Label = styled.label`
-  font-weight: 600;
-  color: #333;
-  font-size: 1rem;
-  margin-left: 0.5rem;
-`;
-
-const Input = styled.input`
-  padding: 1.2rem 1.5rem;
-  border: 2px solid #e1e5e9;
-  border-radius: 15px;
-  font-size: 1.1rem;
-  transition: all 0.3s ease;
-  background: rgba(255, 255, 255, 0.8);
-  backdrop-filter: blur(10px);
-  
-  &:focus {
-    outline: none;
-    border-color: #ff5678;
-    box-shadow: 0 0 0 4px rgba(255, 86, 120, 0.1);
-    transform: translateY(-2px);
-  }
-  
-  &::placeholder {
-    color: #999;
-  }
-  
-  &:hover {
-    border-color: #ff8a9e;
-  }
-`;
-
-const SubmitButton = styled.button`
-  background: linear-gradient(45deg, #ff5678, #ff8a9e);
-  color: white;
-  border: none;
-  padding: 1.2rem;
-  border-radius: 15px;
-  font-size: 1.1rem;
-  font-weight: 700;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  margin-top: 1rem;
-  position: relative;
-  overflow: hidden;
-  
-  &::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: -100%;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
-    transition: left 0.5s;
-  }
-  
-  &:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 15px 30px rgba(255, 86, 120, 0.4);
-    
-    &::before {
-      left: 100%;
-    }
-  }
-  
-  &:disabled {
-    opacity: 0.6;
-    cursor: not-allowed;
-    transform: none;
-  }
-`;
-
-const BackLink = styled(Link)`
-  display: block;
-  text-align: center;
-  margin-top: 2rem;
-  color: #666;
-  text-decoration: none;
-  font-size: 1rem;
-  transition: all 0.3s ease;
-  position: relative;
-  z-index: 2;
-  
-  &:hover {
-    color: #ff5678;
-    transform: translateX(-5px);
-  }
-`;
-
-const ErrorMessage = styled.div`
-  background: linear-gradient(45deg, #fee, #fcc);
-  color: #c33;
-  padding: 1rem 1.5rem;
-  border-radius: 12px;
-  font-size: 0.95rem;
-  border: 1px solid #fcc;
-  box-shadow: 0 4px 15px rgba(204, 51, 51, 0.1);
-  animation: slideIn 0.3s ease;
-  
-  @keyframes slideIn {
-    from {
-      opacity: 0;
-      transform: translateY(-10px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
-`;
-
-const DemoCredentials = styled.div`
-  background: linear-gradient(45deg, #f8f9fa, #e9ecef);
-  padding: 1rem 1.5rem;
-  border-radius: 12px;
-  margin-bottom: 1rem;
-  border: 1px solid #dee2e6;
-  position: relative;
-  z-index: 2;
-`;
-
-const DemoTitle = styled.div`
-  font-weight: 600;
-  color: #333;
-  margin-bottom: 0.5rem;
-  font-size: 0.9rem;
-`;
-
-const DemoText = styled.div`
-  color: #666;
-  font-size: 0.85rem;
-  font-family: 'Courier New', monospace;
-`;
+type FormData = {
+  username: string;
+  password: string;
+};
 
 export default function LoginPage() {
-  const [formData, setFormData] = useState({
-    username: '',
-    password: ''
-  });
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState('');
   const router = useRouter();
+  const cardRef = useRef<HTMLDivElement>(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const [serverError, setServerError] = useState("");
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value
-    });
-    setError(''); // Clear error when user types
-  };
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<FormData>();
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+  const onSubmit = async (data: FormData) => {
     setIsLoading(true);
-    setError('');
+    setServerError("");
 
-    // Simulate API call
-    setTimeout(() => {
-      if (formData.username === 'admin' && formData.password === 'admin123') {
-        // Success - redirect to admin dashboard
-        localStorage.setItem('isLoggedIn', 'true');
-        router.push('/admin');
+    try {
+      const formData = new FormData();
+      formData.append("username", data.username);
+      formData.append("password", data.password);
+
+      const result = await loginAction({ error: "", success: false }, formData);
+      
+      if (result.success) {
+        localStorage.setItem("isLoggedIn", "true");
+        router.push("/admin");
       } else {
-        setError('Tên đăng nhập hoặc mật khẩu không đúng');
+        setServerError(result.error);
       }
+    } catch (error) {
+      console.error("Login error:", error);
+      setServerError("Có lỗi xảy ra, vui lòng thử lại");
+    } finally {
       setIsLoading(false);
-    }, 1000);
+    }
   };
+
+  const SubmitButtonWithStatus = () => {
+    return (
+      <SubmitButton type="submit" disabled={isLoading}>
+        {isLoading ? "Đang khởi tạo..." : "Bước vào ảo giác"}
+      </SubmitButton>
+    );
+  };
+
+  const matrixColumns = Array.from({ length: 20 }, (_, i) => (
+    <MatrixColumn
+      key={i}
+      delay={Math.random() * 3}
+      left={Math.random() * 100}
+    />
+  ));
+
+  const particles = Array.from({ length: 15 }, (_, i) => (
+    <Particle
+      key={i}
+      size={Math.random() * 4 + 2}
+      x={Math.random() * 100}
+      y={Math.random() * 100}
+      delay={Math.random() * 3}
+    />
+  ));
+
+  const backgroundPatterns = [
+    // Circles
+    ...Array.from({ length: 8 }, (_, i) => (
+      <PatternCircle
+        key={`circle-${i}`}
+        x={Math.random() * 100}
+        y={Math.random() * 100}
+        size={Math.random() * 20 + 10}
+        delay={Math.random() * 3}
+      />
+    )),
+    // Squares
+    ...Array.from({ length: 6 }, (_, i) => (
+      <PatternSquare
+        key={`square-${i}`}
+        x={Math.random() * 100}
+        y={Math.random() * 100}
+        size={Math.random() * 25 + 15}
+        delay={Math.random() * 3}
+      />
+    )),
+    // Triangles
+    ...Array.from({ length: 4 }, (_, i) => (
+      <PatternTriangle
+        key={`triangle-${i}`}
+        x={Math.random() * 100}
+        y={Math.random() * 100}
+        size={Math.random() * 30 + 20}
+        delay={Math.random() * 3}
+      />
+    )),
+    // Lines
+    ...Array.from({ length: 5 }, (_, i) => (
+      <PatternLine
+        key={`line-${i}`}
+        x={Math.random() * 100}
+        y={Math.random() * 100}
+        width={Math.random() * 40 + 20}
+        height={Math.random() * 3 + 2}
+        delay={Math.random() * 3}
+      />
+    )),
+    ...Array.from({ length: 7 }, (_, i) => (
+      <ScribbleLine
+        key={`scribble-${i}`}
+        x={Math.random() * 100}
+        y={Math.random() * 100}
+        width={Math.random() * 50 + 30}
+        height={Math.random() * 4 + 2}
+        delay={Math.random() * 3}
+      />
+    )),
+    // Curved lines
+    ...Array.from({ length: 4 }, (_, i) => (
+      <CurvedLine
+        key={`curved-${i}`}
+        x={Math.random() * 100}
+        y={Math.random() * 100}
+        size={Math.random() * 40 + 20}
+        delay={Math.random() * 3}
+      />
+    )),
+    // Zigzag lines
+    ...Array.from({ length: 6 }, (_, i) => (
+      <ZigzagLine
+        key={`zigzag-${i}`}
+        x={Math.random() * 100}
+        y={Math.random() * 100}
+        width={Math.random() * 60 + 40}
+        height={Math.random() * 4 + 2}
+        delay={Math.random() * 3}
+      />
+    )),
+    // Doodle circles
+    ...Array.from({ length: 5 }, (_, i) => (
+      <DoodleCircle
+        key={`doodle-${i}`}
+        x={Math.random() * 100}
+        y={Math.random() * 100}
+        size={Math.random() * 35 + 20}
+        delay={Math.random() * 3}
+      />
+    )),
+    // Wavy lines
+    ...Array.from({ length: 4 }, (_, i) => (
+      <WavyLine
+        key={`wavy-${i}`}
+        x={Math.random() * 100}
+        y={Math.random() * 100}
+        width={Math.random() * 70 + 50}
+        height={Math.random() * 3 + 2}
+        delay={Math.random() * 3}
+      />
+    )),
+  ];
 
   return (
     <LoginContainer>
-      <FloatingElements>
-        <FloatingElement delay={0} duration={6} size={20} style={{ top: '20%', left: '10%' }} />
-        <FloatingElement delay={2} duration={8} size={15} style={{ top: '60%', right: '15%' }} />
-        <FloatingElement delay={4} duration={7} size={25} style={{ top: '80%', left: '20%' }} />
-        <FloatingElement delay={1} duration={9} size={18} style={{ top: '30%', right: '30%' }} />
-      </FloatingElements>
-      
-      <LoginCard>
+      <MatrixRain>{matrixColumns}</MatrixRain>
+      <ParticleSystem>{particles}</ParticleSystem>
+      <BackgroundPattern>{backgroundPatterns}</BackgroundPattern>
+
+      <LoginCard ref={cardRef}>
         <LoginHeader>
-          <LoginTitle>Ảo giác thật???</LoginTitle>
-          <LoginSubtitle>Đề nghị đi chỗ khác chơi</LoginSubtitle>
+          <TypingAnimation text="Ảo Giác Thật" speed={150} />
+          <LoginSubtitle>
+            Bước vào thế giới của những điều không thể
+          </LoginSubtitle>
         </LoginHeader>
 
-        <Form onSubmit={handleSubmit}>
+        <Form onSubmit={handleSubmit(onSubmit)}>
+          {serverError && (
+            <ErrorMessage id="error-message">{serverError}</ErrorMessage>
+          )}
+
           <FormGroup>
-            <Label htmlFor="username">Tên đăng nhập</Label>
+            <Label htmlFor="username">Mật danh</Label>
             <Input
               type="text"
               id="username"
-              name="username"
-              value={formData.username}
-              onChange={handleInputChange}
-              placeholder="Nhập tên đăng nhập"
-              required
+              placeholder="Nhập mật danh để vào cửa"
+              className={errors.username ? "error" : ""}
+              aria-describedby={serverError || errors.username ? "error-message" : undefined}
+              {...register("username", { 
+                required: "Vui lòng nhập mật danh",
+                minLength: {
+                  value: 3,
+                  message: "Mật danh phải có ít nhất 3 ký tự"
+                }
+              })}
             />
+            {errors.username && (
+              <ErrorMessage>{errors.username.message}</ErrorMessage>
+            )}
           </FormGroup>
 
           <FormGroup>
-            <Label htmlFor="password">Mật khẩu</Label>
+            <Label htmlFor="password">Nói cả bí mật nữa</Label>
             <Input
               type="password"
               id="password"
-              name="password"
-              value={formData.password}
-              onChange={handleInputChange}
-              placeholder="Nhập mật khẩu"
-              required
+              placeholder="Nói đi"
+              className={errors.password ? "error" : ""}
+              aria-describedby={serverError || errors.password ? "error-message" : undefined}
+              {...register("password", { 
+                required: "Vui lòng nhập bí mật",
+                minLength: {
+                  value: 6,
+                  message: "Bí mật phải có ít nhất 6 ký tự"
+                }
+              })}
             />
+            {errors.password && (
+              <ErrorMessage>{errors.password.message}</ErrorMessage>
+            )}
           </FormGroup>
 
-          <SubmitButton type="submit" disabled={isLoading}>
-            {isLoading ? 'Đang đăng nhập...' : 'Đăng nhập'}
-          </SubmitButton>
+          <SubmitButtonWithStatus />
         </Form>
 
-        <BackLink href="/">
-          ← Quay lại trang chủ
-        </BackLink>
+        <BackLink href="/">Quay lại thế giới thực</BackLink>
       </LoginCard>
     </LoginContainer>
   );
-} 
+}
