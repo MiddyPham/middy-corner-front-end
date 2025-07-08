@@ -1,4 +1,6 @@
-import styled, { keyframes } from 'styled-components'
+"use client";
+
+import styled, { keyframes } from "styled-components";
 
 export const bounce = keyframes`
   0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
@@ -18,7 +20,7 @@ export const FooterContainer = styled.footer`
   border-top: 4px solid #000000;
   margin-top: auto;
   box-shadow: 0 -8px 0px #333333;
-`
+`;
 
 export const FooterContent = styled.div`
   max-width: 1200px;
@@ -26,19 +28,19 @@ export const FooterContent = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-`
+`;
 
 export const Copyright = styled.p`
   color: #333333;
   font-size: 1rem;
   font-weight: 600;
   text-shadow: 1px 1px 0px #666666;
-`
+`;
 
 export const SocialLinks = styled.div`
   display: flex;
   gap: 1.5rem;
-`
+`;
 
 export const SocialLink = styled.a`
   color: #000000;
@@ -69,4 +71,4 @@ export const SocialLink = styled.a`
     transform: translateY(-1px);
     box-shadow: 2px 2px 0px #333333;
   }
-`
+`;

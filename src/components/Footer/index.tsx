@@ -1,4 +1,4 @@
-'use client'
+"use client";
 
 import React from 'react'
 import {
@@ -12,13 +12,12 @@ import useTrans from "@/lang/useTrans";
 
 const Footer = () => {
   const trans = useTrans();
-  const currentYear = new Date().getFullYear();
 
   return (
     <FooterContainer>
       <FooterContent>
         <Copyright>
-          © {currentYear} Middy Corner. {trans.footer.copyright}
+          © 2025 Middy Corner. {trans.footer.copyright}
         </Copyright>
         <SocialLinks>
           <SocialLink href="/privacy" target="_blank" rel="noopener noreferrer">

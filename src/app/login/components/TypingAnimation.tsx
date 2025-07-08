@@ -8,8 +8,8 @@ const blink = keyframes`
 `;
 
 const glow = keyframes`
-  0%, 100% { text-shadow: 0 0 20px rgba(255, 86, 120, 0.5); }
-  50% { text-shadow: 0 0 30px rgba(255, 86, 120, 0.8), 0 0 40px rgba(255, 86, 120, 0.6); }
+  0%, 100% { text-shadow: 0 0 20px rgba(33, 33, 33, 0.5); }
+  50% { text-shadow: 0 0 30px rgba(33, 33, 33, 0.8), 0 0 40px rgba(33, 33, 33, 0.6); }
 `;
 
 const TypingContainer = styled.div`
@@ -20,7 +20,7 @@ const TypingContainer = styled.div`
 const TypingText = styled.span`
   font-size: 2.5rem;
   font-weight: 900;
-  background: linear-gradient(45deg, #ff5678, #ff8a9e, #667eea, #764ba2);
+  background: linear-gradient(45deg, #333333, #333333, #333333, #333333);
   background-size: 300% 300%;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;

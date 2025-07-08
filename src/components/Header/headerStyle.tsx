@@ -35,7 +35,7 @@ export const NavItem = styled.div<{ hasDropdown?: boolean }>`
   }
 `
 
-export const NavItemText = styled.div<{ scrolled: boolean }>`
+export const NavItemText = styled.div<{ $scrolled: boolean }>`
   position: relative;
   transition: transform 0.3s ease;
   color: #000000;
@@ -91,7 +91,7 @@ export const SearchBox = styled.div`
   }
 `
 
-export const HeaderContainer = styled.header<{ scrolled: boolean }>`
+export const HeaderContainer = styled.header<{ $scrolled: boolean }>`
   position: fixed;
   top: 0;
   left: 0;
@@ -101,7 +101,7 @@ export const HeaderContainer = styled.header<{ scrolled: boolean }>`
   border-bottom: 4px solid #000000;
   transition: all 0.3s ease;
   padding: 1rem 2rem;
-  box-shadow: ${props => props.scrolled 
+  box-shadow: ${props => props.$scrolled 
     ? '0 8px 0px #333333' 
     : 'none'};
 `;
@@ -130,7 +130,7 @@ export const Logo = styled.div`
   }
 `;
 
-export const NavLinks = styled.div<{ isOpen: boolean }>`
+export const NavLinks = styled.div<{ $isOpen: boolean }>`
   display: flex;
   align-items: center;
   gap: 2.5rem;
@@ -142,7 +142,7 @@ export const NavLinks = styled.div<{ isOpen: boolean }>`
   @media (max-width: 768px) {
     position: fixed;
     top: 0;
-    right: ${props => props.isOpen ? '0' : '-100%'};
+    right: ${props => props.$isOpen ? '0' : '-100%'};
     width: 250px;
     height: 100vh;
     background: #ffffff;
@@ -151,11 +151,11 @@ export const NavLinks = styled.div<{ isOpen: boolean }>`
     justify-content: flex-start;
     padding-top: 6rem;
     transition: right 0.3s ease;
-    box-shadow: ${props => props.isOpen ? '8px 0px 0px #333333' : 'none'};
+    box-shadow: ${props => props.$isOpen ? '8px 0px 0px #333333' : 'none'};
   }
 `;
 
-export const NavLink = styled.div<{ scrolled: boolean }>`
+export const NavLink = styled.div<{ $scrolled: boolean }>`
   color: #000000;
   transition: all 0.3s ease;
   position: relative;
@@ -204,7 +204,7 @@ export const RightSection = styled.div`
   gap: 1.5rem;
 `;
 
-export const LanguageButton = styled.div<{ scrolled: boolean }>`
+export const LanguageButton = styled.div<{ $scrolled: boolean }>`
   position: relative;
   color: #000000;
   font-weight: 800;
@@ -228,17 +228,17 @@ export const LanguageButton = styled.div<{ scrolled: boolean }>`
   }
 `;
 
-export const LanguageDropdown = styled.div<{ isOpen: boolean }>`
+export const LanguageDropdown = styled.div<{ $isOpen: boolean }>`
   position: absolute;
   top: 80%;
   left: 50%;
   transform: translateX(-50%);
   width: 1px;
   height: 1px;
-  pointer-events: ${props => props.isOpen ? 'auto' : 'none'};
+  pointer-events: ${props => props.$isOpen ? 'auto' : 'none'};
 `;
 
-export const LanguageOption = styled.div<{ index: number; isOpen: boolean }>`
+export const LanguageOption = styled.div<{ index: number; $isOpen: boolean }>`
   position: absolute;
   top: 0;
   left: 0;
@@ -255,37 +255,37 @@ export const LanguageOption = styled.div<{ index: number; isOpen: boolean }>`
   font-weight: 800;
   box-shadow: 4px 4px 0px #333333;
   
-  opacity: ${props => props.isOpen ? 1 : 0};
+  opacity: ${props => props.$isOpen ? 1 : 0};
   transition: all 0.3s cubic-bezier(0.68, -0.55, 0.27, 1.55);
-  transition-delay: ${props => props.isOpen ? `${props.index * 0.07}s` : '0s'};
+  transition-delay: ${props => props.$isOpen ? `${props.index * 0.07}s` : '0s'};
   
   transform-origin: center;
-  transform: ${({ index, isOpen }) => {
+  transform: ${({ index, $isOpen }) => {
     const initialTransform = 'translate(-50%, -50%) scale(0)';
     const finalTransforms = [
       'translate(-22.5px, 25px) scale(1)',
       'translate(30px, 15px) scale(1)',
       'translate(-75px, 15px) scale(1)',
     ];
-    return isOpen ? finalTransforms[index] || initialTransform : initialTransform;
+    return $isOpen ? finalTransforms[index] || initialTransform : initialTransform;
   }};
 
   &:hover {
     background: #000000;
     color: #ffffff;
-    transform: ${({ index, isOpen }) => {
+    transform: ${({ index, $isOpen }) => {
       const hoverTransforms = [
         'translate(-22.5px, 25px) scale(1.15)',
         'translate(30px, 15px) scale(1.15)',
         'translate(-75px, 15px) scale(1.15)',
       ];
-      return isOpen ? hoverTransforms[index] || 'translate(-50%, -50%) scale(0)' : 'translate(-50%, -50%) scale(0)';
+      return $isOpen ? hoverTransforms[index] || 'translate(-50%, -50%) scale(0)' : 'translate(-50%, -50%) scale(0)';
     }};
     box-shadow: 6px 6px 0px #333333;
   }
 `;
 
-export const LoginButton = styled.button<{ scrolled: boolean }>`
+export const LoginButton = styled.button<{ $scrolled: boolean }>`
   background: #000000;
   color: #ffffff;
   border: 3px solid #000000;
@@ -314,7 +314,7 @@ export const LoginButton = styled.button<{ scrolled: boolean }>`
   }
 `;
 
-export const MobileMenuButton = styled.button<{ scrolled: boolean; isOpen: boolean }>`
+export const MobileMenuButton = styled.button<{ $scrolled: boolean; $isOpen: boolean }>`
   display: none;
   background: #ffffff;
   border: 3px solid #000000;
@@ -345,24 +345,24 @@ export const MobileMenuButton = styled.button<{ scrolled: boolean; isOpen: boole
     border-radius: 2px;
     
     &:nth-child(1) {
-      transform: ${props => props.isOpen ? 'rotate(45deg) translate(6px, 6px)' : 'none'};
+      transform: ${props => props.$isOpen ? 'rotate(45deg) translate(6px, 6px)' : 'none'};
     }
     
     &:nth-child(2) {
-      opacity: ${props => props.isOpen ? '0' : '1'};
+      opacity: ${props => props.$isOpen ? '0' : '1'};
     }
     
     &:nth-child(3) {
-      transform: ${props => props.isOpen ? 'rotate(-45deg) translate(6px, -6px)' : 'none'};
+      transform: ${props => props.$isOpen ? 'rotate(-45deg) translate(6px, -6px)' : 'none'};
     }
   }
 `;
 
-export const Overlay = styled.div<{ isOpen: boolean }>`
+export const Overlay = styled.div<{ $isOpen: boolean }>`
   display: none;
   
   @media (max-width: 768px) {
-    display: ${props => props.isOpen ? 'block' : 'none'};
+    display: ${props => props.$isOpen ? 'block' : 'none'};
     position: fixed;
     top: 0;
     left: 0;

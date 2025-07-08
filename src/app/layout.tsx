@@ -1,9 +1,8 @@
 import { Geist, Geist_Mono } from "next/font/google";
 import "../styles/global.css";
-import StyledComponentsRegistry from '@/lib/registry';
-import type { Metadata } from 'next';
-import { MainLayout, MainContent } from "../components/HomePage/indexStyle";
-import Providers from '@/components/Providers';
+import StyledComponentsRegistry from "@/lib/registry";
+// import { MainLayout, MainContent } from "../components/HomePage/indexStyle";
+import Providers from "@/components/Providers";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -27,16 +26,17 @@ export default function RootLayout({
 }) {
   return (
     <html lang="vi" suppressHydrationWarning>
-      <body className={`${geistSans.variable} ${geistMono.variable} geist_e531`} suppressHydrationWarning>
-        <StyledComponentsRegistry>
-          <Providers>
-            <MainLayout>
-              <MainContent>
-                {children}
-              </MainContent>
-            </MainLayout>
-          </Providers>
-        </StyledComponentsRegistry>
+      <body
+        className={`${geistSans.variable} ${geistMono.variable} geist_e531`}
+        suppressHydrationWarning
+      >
+        <Providers>
+          {/* <MainLayout> */}
+            {/* <MainContent> */}
+              <StyledComponentsRegistry>{children}</StyledComponentsRegistry>
+            {/* </MainContent> */}
+          {/* </MainLayout> */}
+        </Providers>
       </body>
     </html>
   );

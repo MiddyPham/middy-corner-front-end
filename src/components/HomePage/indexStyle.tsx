@@ -413,12 +413,12 @@ export const SecondaryButton = styled.button`
   }
 `;
 
-export const MainLayout = styled.div`
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-`;
+// export const MainLayout = styled.div`
+//   min-height: 100vh;
+//   display: flex;
+//   flex-direction: column;
+// `;
 
-export const MainContent = styled.main`
-  flex: 1;
-`;
+// export const MainContent = styled.main`
+//   flex: 1;
+// `;

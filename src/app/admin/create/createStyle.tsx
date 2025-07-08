@@ -407,3 +407,13 @@ export const CancelButton = styled(Link)`
     box-shadow: 2px 2px 0px #333333;
   }
 `;
+
+export const ErrorMessage = styled.span`
+  color: #ff0000;
+  font-size: 0.9rem;
+  margin-top: 0.5rem;
+  font-weight: 600;
+  text-shadow: 1px 1px 0px #ffffff;
+  display: block;
+  animation: ${shake} 0.5s ease;
+`;

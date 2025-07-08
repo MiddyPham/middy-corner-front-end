@@ -2,10 +2,10 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import dynamic from "next/dynamic";
-import { CreateContainer, CreateHeader, HeaderTitle, BackButton, CreateContent, FormContainer, FormSection, SectionTitle, FormGroup, Label, Input, Textarea, Select, RadioGroup, RadioLabel, RadioInput, FileUpload, FileInput, UploadText, ImagePreview, PreviewImage, TagInput, Tag, RemoveTag, TagInputField, ButtonGroup, SaveButton, DraftButton, PreviewButton, CancelButton } from "./createStyle";
+import { useForm, Controller } from "react-hook-form";
+import { CreateContainer, CreateHeader, HeaderTitle, BackButton, CreateContent, FormContainer, FormSection, SectionTitle, FormGroup, Label, Input, Textarea, Select, RadioGroup, RadioLabel, RadioInput, FileUpload, FileInput, UploadText, ImagePreview, PreviewImage, TagInput, Tag, RemoveTag, TagInputField, ButtonGroup, SaveButton, DraftButton, PreviewButton, CancelButton, ErrorMessage } from "./createStyle";
 import 'react-quill-new/dist/quill.snow.css';
 
-// Import Quill editor dynamically to avoid SSR issues
 const QuillEditor = dynamic(() => import("react-quill-new"), {
   ssr: false,
   loading: () => <div>Đang tải editor...</div>,
@@ -31,7 +31,6 @@ const quillFormats = [
   "underline",
   "strike",
   "list",
-  "bullet",
   "color",
   "background",
   "align",
@@ -39,25 +38,53 @@ const quillFormats = [
   "image",
 ];
 
+interface FormData {
+  title: string;
+  slug: string;
+  description: string;
+  content: string;
+  thumbnail: File | null;
+  category: string;
+  status: "draft" | "published" | "hidden";
+  seoTitle: string;
+  seoDescription: string;
+  seoKeywords: string;
+  publishDate: string;
+  tags: string[];
+}
+
 export default function CreatePost() {
   const router = useRouter();
   const [mounted, setMounted] = useState(false);
-  const [formData, setFormData] = useState({
-    title: "",
-    slug: "",
-    description: "",
-    content: "",
-    thumbnail: null as File | null,
-    category: "",
-    status: "draft",
-    seoTitle: "",
-    seoDescription: "",
-    seoKeywords: "",
-    publishDate: "",
-    tags: [] as string[],
-  });
   const [tagInput, setTagInput] = useState("");
   const [thumbnailPreview, setThumbnailPreview] = useState("");
+
+  const {
+    register,
+    handleSubmit,
+    watch,
+    setValue,
+    control,
+    formState: { errors, isSubmitting }
+  } = useForm<FormData>({
+    defaultValues: {
+      title: "",
+      slug: "",
+      description: "",
+      content: "",
+      thumbnail: null,
+      category: "",
+      status: "draft",
+      seoTitle: "",
+      seoDescription: "",
+      seoKeywords: "",
+      publishDate: "",
+      tags: [],
+    }
+  });
+
+  const watchedTitle = watch("title");
+  const watchedTags = watch("tags");
 
   useEffect(() => {
     setMounted(true);
@@ -70,25 +97,21 @@ export default function CreatePost() {
 
   // Auto-generate slug from title
   useEffect(() => {
-    if (formData.title) {
-      const slug = formData.title
+    if (watchedTitle) {
+      const slug = watchedTitle
         .toLowerCase()
         .replace(/[^a-z0-9\s-]/g, "")
         .replace(/\s+/g, "-")
         .replace(/-+/g, "-")
         .trim();
-      setFormData((prev) => ({ ...prev, slug }));
+      setValue("slug", slug);
     }
-  }, [formData.title]);
-
-  const handleInputChange = (field: string, value: string) => {
-    setFormData((prev) => ({ ...prev, [field]: value }));
-  };
+  }, [watchedTitle, setValue]);
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
-      setFormData((prev) => ({ ...prev, thumbnail: file }));
+      setValue("thumbnail", file);
       const reader = new FileReader();
       reader.onload = (e) => {
         setThumbnailPreview(e.target?.result as string);
@@ -100,41 +123,35 @@ export default function CreatePost() {
   const handleTagInputKeyDown = (e: React.KeyboardEvent) => {
     if (e.key === "Enter" && tagInput.trim()) {
       e.preventDefault();
-      if (!formData.tags.includes(tagInput.trim())) {
-        setFormData((prev) => ({
-          ...prev,
-          tags: [...prev.tags, tagInput.trim()],
-        }));
+      if (!watchedTags.includes(tagInput.trim())) {
+        setValue("tags", [...watchedTags, tagInput.trim()]);
       }
       setTagInput("");
     }
   };
 
   const removeTag = (tagToRemove: string) => {
-    setFormData((prev) => ({
-      ...prev,
-      tags: prev.tags.filter((tag) => tag !== tagToRemove),
-    }));
+    setValue("tags", watchedTags.filter((tag) => tag !== tagToRemove));
   };
 
-  const handleSave = (status: "draft" | "published") => {
+  const onSubmit = (data: FormData) => {
     const postData = {
-      ...formData,
-      status,
-      publishDate: status === "published" ? new Date().toISOString() : null,
+      ...data,
+      publishDate: data.status === "published" ? new Date().toISOString() : null,
     };
 
     console.log("Saving post:", postData);
     // Here you would typically send to API
-    alert(
-      `Bài viết đã được ${
-        status === "draft" ? "lưu nháp" : "xuất bản"
-      } thành công!`
-    );
-    router.push("/admin");
+    // alert(
+    //   `Bài viết đã được ${
+    //     data.status === "draft" ? "lưu nháp" : "xuất bản"
+    //   } thành công!`
+    // );
+    // router.push("/admin");
   };
 
   const handlePreview = () => {
+    const formData = watch();
     // Open preview in new tab
     const previewWindow = window.open("", "_blank");
     if (previewWindow) {
@@ -186,7 +203,7 @@ export default function CreatePost() {
       </CreateHeader>
 
       <CreateContent>
-        <FormContainer>
+        <FormContainer onSubmit={handleSubmit(onSubmit)}>
           {/* Basic Information */}
           <FormSection>
             <SectionTitle>Thông tin cơ bản</SectionTitle>
@@ -196,11 +213,14 @@ export default function CreatePost() {
               <Input
                 id="title"
                 type="text"
-                value={formData.title}
-                onChange={(e) => handleInputChange("title", e.target.value)}
+                {...register("title", { 
+                  required: "Tiêu đề là bắt buộc",
+                  minLength: { value: 5, message: "Tiêu đề phải có ít nhất 5 ký tự" }
+                })}
                 placeholder="Nhập tiêu đề bài viết..."
-                required
+                className={errors.title ? "error" : ""}
               />
+              {errors.title && <ErrorMessage>{errors.title.message}</ErrorMessage>}
             </FormGroup>
 
             <FormGroup>
@@ -208,22 +228,27 @@ export default function CreatePost() {
               <Input
                 id="slug"
                 type="text"
-                value={formData.slug}
-                onChange={(e) => handleInputChange("slug", e.target.value)}
+                {...register("slug", { 
+                  required: "Slug là bắt buộc",
+                  pattern: { value: /^[a-z0-9-]+$/, message: "Slug chỉ được chứa chữ thường, số và dấu gạch ngang" }
+                })}
                 placeholder="slug-tu-dong-sinh-tu-tieu-de"
+                className={errors.slug ? "error" : ""}
               />
+              {errors.slug && <ErrorMessage>{errors.slug.message}</ErrorMessage>}
             </FormGroup>
 
             <FormGroup>
               <Label htmlFor="description">Mô tả ngắn</Label>
               <Textarea
                 id="description"
-                value={formData.description}
-                onChange={(e) =>
-                  handleInputChange("description", e.target.value)
-                }
+                {...register("description", { 
+                  maxLength: { value: 200, message: "Mô tả không được quá 200 ký tự" }
+                })}
                 placeholder="Mô tả ngắn gọn về bài viết (hiển thị trên trang danh sách)..."
+                className={errors.description ? "error" : ""}
               />
+              {errors.description && <ErrorMessage>{errors.description.message}</ErrorMessage>}
             </FormGroup>
           </FormSection>
 
@@ -232,13 +257,21 @@ export default function CreatePost() {
             <SectionTitle>Nội dung chính</SectionTitle>
             <FormGroup>
               <Label>Nội dung bài viết</Label>
-              <QuillEditor
-                value={formData.content}
-                onChange={(content) => handleInputChange("content", content)}
-                modules={quillModules}
-                formats={quillFormats}
-                style={{ height: "400px", marginBottom: "1rem" }}
+              <Controller
+                name="content"
+                control={control}
+                rules={{ required: "Nội dung là bắt buộc" }}
+                render={({ field }) => (
+                  <QuillEditor
+                    value={field.value}
+                    onChange={field.onChange}
+                    modules={quillModules}
+                    formats={quillFormats}
+                    style={{ height: "400px", marginBottom: "1rem" }}
+                  />
+                )}
               />
+              {errors.content && <ErrorMessage>{errors.content.message}</ErrorMessage>}
             </FormGroup>
           </FormSection>
 
@@ -278,8 +311,8 @@ export default function CreatePost() {
               <Label htmlFor="category">Chuyên mục</Label>
               <Select
                 id="category"
-                value={formData.category}
-                onChange={(e) => handleInputChange("category", e.target.value)}
+                {...register("category", { required: "Vui lòng chọn chuyên mục" })}
+                className={errors.category ? "error" : ""}
               >
                 <option value="">Chọn chuyên mục</option>
                 <option value="technology">Công nghệ</option>
@@ -288,15 +321,16 @@ export default function CreatePost() {
                 <option value="tutorial">Hướng dẫn</option>
                 <option value="news">Tin tức</option>
               </Select>
+              {errors.category && <ErrorMessage>{errors.category.message}</ErrorMessage>}
             </FormGroup>
 
             <FormGroup>
               <Label>Tags</Label>
               <TagInput>
-                {formData.tags.map((tag, index) => (
+                {watchedTags.map((tag, index) => (
                   <Tag key={index}>
                     {tag}
-                    <RemoveTag onClick={() => removeTag(tag)}>×</RemoveTag>
+                    <RemoveTag type="button" onClick={() => removeTag(tag)}>×</RemoveTag>
                   </Tag>
                 ))}
                 <TagInputField
@@ -320,36 +354,24 @@ export default function CreatePost() {
                 <RadioLabel>
                   <RadioInput
                     type="radio"
-                    name="status"
                     value="draft"
-                    checked={formData.status === "draft"}
-                    onChange={(e) =>
-                      handleInputChange("status", e.target.value)
-                    }
+                    {...register("status")}
                   />
                   Nháp
                 </RadioLabel>
                 <RadioLabel>
                   <RadioInput
                     type="radio"
-                    name="status"
                     value="published"
-                    checked={formData.status === "published"}
-                    onChange={(e) =>
-                      handleInputChange("status", e.target.value)
-                    }
+                    {...register("status")}
                   />
                   Xuất bản
                 </RadioLabel>
                 <RadioLabel>
                   <RadioInput
                     type="radio"
-                    name="status"
                     value="hidden"
-                    checked={formData.status === "hidden"}
-                    onChange={(e) =>
-                      handleInputChange("status", e.target.value)
-                    }
+                    {...register("status")}
                   />
                   Ẩn
                 </RadioLabel>
@@ -361,10 +383,7 @@ export default function CreatePost() {
               <Input
                 id="publishDate"
                 type="datetime-local"
-                value={formData.publishDate}
-                onChange={(e) =>
-                  handleInputChange("publishDate", e.target.value)
-                }
+                {...register("publishDate")}
               />
             </FormGroup>
           </FormSection>
@@ -378,8 +397,7 @@ export default function CreatePost() {
               <Input
                 id="seoTitle"
                 type="text"
-                value={formData.seoTitle}
-                onChange={(e) => handleInputChange("seoTitle", e.target.value)}
+                {...register("seoTitle")}
                 placeholder="Title cho SEO (để trống sẽ dùng tiêu đề bài viết)"
               />
             </FormGroup>
@@ -388,12 +406,13 @@ export default function CreatePost() {
               <Label htmlFor="seoDescription">Description SEO</Label>
               <Textarea
                 id="seoDescription"
-                value={formData.seoDescription}
-                onChange={(e) =>
-                  handleInputChange("seoDescription", e.target.value)
-                }
+                {...register("seoDescription", { 
+                  maxLength: { value: 160, message: "Mô tả SEO không được quá 160 ký tự" }
+                })}
                 placeholder="Mô tả cho SEO (để trống sẽ dùng mô tả bài viết)"
+                className={errors.seoDescription ? "error" : ""}
               />
+              {errors.seoDescription && <ErrorMessage>{errors.seoDescription.message}</ErrorMessage>}
             </FormGroup>
 
             <FormGroup>
@@ -401,10 +420,7 @@ export default function CreatePost() {
               <Input
                 id="seoKeywords"
                 type="text"
-                value={formData.seoKeywords}
-                onChange={(e) =>
-                  handleInputChange("seoKeywords", e.target.value)
-                }
+                {...register("seoKeywords")}
                 placeholder="Từ khóa SEO, phân cách bằng dấu phẩy"
               />
             </FormGroup>
@@ -412,13 +428,21 @@ export default function CreatePost() {
 
           {/* Action Buttons */}
           <ButtonGroup>
-            <SaveButton onClick={() => handleSave("published")}>
-              Xuất bản
+            <SaveButton 
+              type="submit" 
+              disabled={isSubmitting}
+              onClick={() => setValue("status", "published")}
+            >
+              {isSubmitting ? "Đang lưu..." : "Xuất bản"}
             </SaveButton>
-            <DraftButton onClick={() => handleSave("draft")}>
-              Lưu nháp
+            <DraftButton 
+              type="submit" 
+              disabled={isSubmitting}
+              onClick={() => setValue("status", "draft")}
+            >
+              {isSubmitting ? "Đang lưu..." : "Lưu nháp"}
             </DraftButton>
-            <PreviewButton onClick={handlePreview}>Xem trước</PreviewButton>
+            <PreviewButton type="button" onClick={handlePreview}>Xem trước</PreviewButton>
             <CancelButton href="/admin">Hủy</CancelButton>
           </ButtonGroup>
         </FormContainer>

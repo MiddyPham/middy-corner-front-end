@@ -82,7 +82,7 @@ export default function Header() {
 
   return (
     <>
-      <HeaderContainer scrolled={scrolled}>
+      <HeaderContainer $scrolled={scrolled}>
         <Nav>
           <Link href="/">
             <Logo>
@@ -95,12 +95,12 @@ export default function Header() {
             </Logo>
           </Link>
 
-          <NavLinks isOpen={isMenuOpen}>
+          <NavLinks $isOpen={isMenuOpen}>
             {navLinks.map((link) => (
               <NavItem key={link.href}>
                 <Link key={link.href} href={link.href} passHref>
                   <NavItemText
-                    scrolled={scrolled}
+                    $scrolled={scrolled}
                     onClick={closeMenu}
                     data-hover={link.label}
                   >
@@ -113,21 +113,21 @@ export default function Header() {
 
           <RightSection>
             <Link href="/login" passHref>
-              <LoginButton scrolled={scrolled}>Đăng nhập</LoginButton>
+              <LoginButton $scrolled={scrolled}>Đăng nhập</LoginButton>
             </Link>
 
             <LanguageButton
-              scrolled={scrolled}
+              $scrolled={scrolled}
               onClick={() => setIsDropdownOpen(!isDropdownOpen)}
             >
               {LANGUAGE_MAP[currentLang as keyof typeof LANGUAGE_MAP]}
-              <LanguageDropdown isOpen={isDropdownOpen}>
+              <LanguageDropdown $isOpen={isDropdownOpen}>
                 {languageOptions.map(({ key, value }, index) => (
                   <LanguageOption
                     key={key}
                     onClick={() => handleLanguageChange(value)}
                     index={index}
-                    isOpen={isDropdownOpen}
+                    $isOpen={isDropdownOpen}
                   >
                     {key}
                   </LanguageOption>
@@ -136,8 +136,8 @@ export default function Header() {
             </LanguageButton>
 
             <MobileMenuButton
-              scrolled={scrolled}
-              isOpen={isMenuOpen}
+              $scrolled={scrolled}
+              $isOpen={isMenuOpen}
               onClick={toggleMenu}
               aria-label="Toggle menu"
             >
@@ -149,7 +149,7 @@ export default function Header() {
         </Nav>
       </HeaderContainer>
 
-      <Overlay isOpen={isMenuOpen} onClick={closeMenu} />
+      <Overlay $isOpen={isMenuOpen} onClick={closeMenu} />
     </>
   );
 }
