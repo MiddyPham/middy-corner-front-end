@@ -1,42 +1,9 @@
 "use client";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import dynamic from "next/dynamic";
 import { useForm, Controller } from "react-hook-form";
 import { CreateContainer, CreateHeader, HeaderTitle, BackButton, CreateContent, FormContainer, FormSection, SectionTitle, FormGroup, Label, Input, Textarea, Select, RadioGroup, RadioLabel, RadioInput, FileUpload, FileInput, UploadText, ImagePreview, PreviewImage, TagInput, Tag, RemoveTag, TagInputField, ButtonGroup, SaveButton, DraftButton, PreviewButton, CancelButton, ErrorMessage } from "./createStyle";
-import 'react-quill-new/dist/quill.snow.css';
-
-const QuillEditor = dynamic(() => import("react-quill-new"), {
-  ssr: false,
-  loading: () => <div>Đang tải editor...</div>,
-});
-
-// Quill editor styles
-const quillModules = {
-  toolbar: [
-    [{ header: [1, 2, 3, false] }],
-    ["bold", "italic", "underline", "strike"],
-    [{ list: "ordered" }, { list: "bullet" }],
-    [{ color: [] }, { background: [] }],
-    [{ align: [] }],
-    ["link", "image"],
-    ["clean"],
-  ],
-};
-
-const quillFormats = [
-  "header",
-  "bold",
-  "italic",
-  "underline",
-  "strike",
-  "list",
-  "color",
-  "background",
-  "align",
-  "link",
-  "image",
-];
+import QuillEditorCustom from "@/components/QuillEditor";
 
 interface FormData {
   title: string;
@@ -252,7 +219,6 @@ export default function CreatePost() {
             </FormGroup>
           </FormSection>
 
-          {/* Content */}
           <FormSection>
             <SectionTitle>Nội dung chính</SectionTitle>
             <FormGroup>
@@ -262,11 +228,9 @@ export default function CreatePost() {
                 control={control}
                 rules={{ required: "Nội dung là bắt buộc" }}
                 render={({ field }) => (
-                  <QuillEditor
+                  <QuillEditorCustom
                     value={field.value}
                     onChange={field.onChange}
-                    modules={quillModules}
-                    formats={quillFormats}
                     style={{ height: "400px", marginBottom: "1rem" }}
                   />
                 )}

@@ -20,11 +20,11 @@ export const shake = keyframes`
 
 export const NavItem = styled.div<{ hasDropdown?: boolean }>`
   font-weight: 800;
-  font-size: 24px;
+  font-size: 23px;
   line-height: 26px;
+  height: 26px;
   cursor: pointer;
   position: relative;
-  height: 24px;
   overflow: hidden;
   color: #000000;
   text-shadow: 1px 1px 0px #333333;
@@ -39,6 +39,8 @@ export const NavItemText = styled.div<{ $scrolled: boolean }>`
   position: relative;
   transition: transform 0.3s ease;
   color: #000000;
+  height: 26px;
+  line-height: 26px;
   
   &:hover {
     transform: translateY(-100%);
@@ -370,5 +372,91 @@ export const Overlay = styled.div<{ $isOpen: boolean }>`
     bottom: 0;
     background: rgba(0, 0, 0, 0.3);
     z-index: 999;
+  }
+`;
+
+export const UserProfile = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  position: relative;
+  
+  @media (max-width: 768px) {
+    flex-direction: column;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+  }
+`;
+
+export const UserAvatar = styled.div`
+  position: relative;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  
+  img {
+    border: 3px solid #000000;
+    border-radius: 50%;
+    box-shadow: 4px 4px 0px #333333;
+    transition: all 0.3s ease;
+  }
+  
+  &:hover {
+    transform: translateY(-3px);
+    
+    img {
+      box-shadow: 6px 6px 0px #333333;
+    }
+  }
+`;
+
+export const UserInfo = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  
+  @media (max-width: 768px) {
+    align-items: center;
+    text-align: center;
+  }
+`;
+
+export const UserName = styled.p`
+  color: #000000;
+  font-weight: 800;
+  font-size: 1rem;
+  margin: 0;
+  text-shadow: 1px 1px 0px #333333;
+  
+  @media (max-width: 768px) {
+    font-size: 0.9rem;
+  }
+`;
+
+export const LogoutButton = styled.button`
+  background: #ffffff;
+  color: #000000;
+  border: 3px solid #000000;
+  padding: 0.4rem 1rem;
+  font-size: 0.8rem;
+  font-weight: 800;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 4px 4px 0px #333333;
+  
+  &:hover {
+    transform: translateY(-3px);
+    box-shadow: 6px 6px 0px #333333;
+    animation: ${wiggle} 0.5s ease;
+  }
+  
+  &:active {
+    transform: translateY(-1px);
+    box-shadow: 2px 2px 0px #333333;
+  }
+  
+  @media (max-width: 768px) {
+    font-size: 0.7rem;
+    padding: 0.3rem 0.8rem;
   }
 `;

@@ -1,15 +1,10 @@
 "use client";
-import { useRef, useState } from "react";
 import { useRouter } from "next/navigation";
-import { useForm } from "react-hook-form";
-import { loginAction } from "./actions";
 import TypingAnimation from "./components/TypingAnimation";
 import {
   LoginContainer,
   MatrixRain,
-  MatrixColumn,
   ParticleSystem,
-  Particle,
   LoginCard,
   LoginHeader,
   LoginSubtitle,
@@ -17,184 +12,25 @@ import {
   FormGroup,
   Label,
   Input,
-  SubmitButton,
   BackLink,
   ErrorMessage,
-  BackgroundPattern,
-  PatternCircle,
-  PatternSquare,
-  PatternTriangle,
-  PatternLine,
-  ScribbleLine,
-  CurvedLine,
-  ZigzagLine,
-  DoodleCircle,
-  WavyLine,
+  BackgroundPattern,  
 } from "./loginStyle";
+import { useLogin } from "./useLogin";
 
-type FormData = {
-  username: string;
-  password: string;
-};
-
-export default function LoginPage() {
-  const router = useRouter();
-  const cardRef = useRef<HTMLDivElement>(null);
-  const [isLoading, setIsLoading] = useState(false);
-  const [serverError, setServerError] = useState("");
-
+const LoginPage = () => {
   const {
+    cardRef,
+    serverError,
     register,
     handleSubmit,
-    formState: { errors },
-  } = useForm<FormData>();
-
-  const onSubmit = async (data: FormData) => {
-    setIsLoading(true);
-    setServerError("");
-
-    try {
-      const formData = new FormData();
-      formData.append("username", data.username);
-      formData.append("password", data.password);
-
-      const result = await loginAction({ error: "", success: false }, formData);
-      
-      if (result.success) {
-        localStorage.setItem("isLoggedIn", "true");
-        router.push("/admin");
-      } else {
-        setServerError(result.error);
-      }
-    } catch (error) {
-      console.error("Login error:", error);
-      setServerError("Có lỗi xảy ra, vui lòng thử lại");
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  const SubmitButtonWithStatus = () => {
-    return (
-      <SubmitButton type="submit" disabled={isLoading}>
-        {isLoading ? "Đang khởi tạo..." : "Bước vào ảo giác"}
-      </SubmitButton>
-    );
-  };
-
-  const matrixColumns = Array.from({ length: 20 }, (_, i) => (
-    <MatrixColumn
-      key={i}
-      delay={Math.random() * 3}
-      left={Math.random() * 100}
-    />
-  ));
-
-  const particles = Array.from({ length: 15 }, (_, i) => (
-    <Particle
-      key={i}
-      size={Math.random() * 4 + 2}
-      x={Math.random() * 100}
-      y={Math.random() * 100}
-      delay={Math.random() * 3}
-    />
-  ));
-
-  const backgroundPatterns = [
-    // Circles
-    ...Array.from({ length: 8 }, (_, i) => (
-      <PatternCircle
-        key={`circle-${i}`}
-        x={Math.random() * 100}
-        y={Math.random() * 100}
-        size={Math.random() * 20 + 10}
-        delay={Math.random() * 3}
-      />
-    )),
-    // Squares
-    ...Array.from({ length: 6 }, (_, i) => (
-      <PatternSquare
-        key={`square-${i}`}
-        x={Math.random() * 100}
-        y={Math.random() * 100}
-        size={Math.random() * 25 + 15}
-        delay={Math.random() * 3}
-      />
-    )),
-    // Triangles
-    ...Array.from({ length: 4 }, (_, i) => (
-      <PatternTriangle
-        key={`triangle-${i}`}
-        x={Math.random() * 100}
-        y={Math.random() * 100}
-        size={Math.random() * 30 + 20}
-        delay={Math.random() * 3}
-      />
-    )),
-    // Lines
-    ...Array.from({ length: 5 }, (_, i) => (
-      <PatternLine
-        key={`line-${i}`}
-        x={Math.random() * 100}
-        y={Math.random() * 100}
-        width={Math.random() * 40 + 20}
-        height={Math.random() * 3 + 2}
-        delay={Math.random() * 3}
-      />
-    )),
-    ...Array.from({ length: 7 }, (_, i) => (
-      <ScribbleLine
-        key={`scribble-${i}`}
-        x={Math.random() * 100}
-        y={Math.random() * 100}
-        width={Math.random() * 50 + 30}
-        height={Math.random() * 4 + 2}
-        delay={Math.random() * 3}
-      />
-    )),
-    // Curved lines
-    ...Array.from({ length: 4 }, (_, i) => (
-      <CurvedLine
-        key={`curved-${i}`}
-        x={Math.random() * 100}
-        y={Math.random() * 100}
-        size={Math.random() * 40 + 20}
-        delay={Math.random() * 3}
-      />
-    )),
-    // Zigzag lines
-    ...Array.from({ length: 6 }, (_, i) => (
-      <ZigzagLine
-        key={`zigzag-${i}`}
-        x={Math.random() * 100}
-        y={Math.random() * 100}
-        width={Math.random() * 60 + 40}
-        height={Math.random() * 4 + 2}
-        delay={Math.random() * 3}
-      />
-    )),
-    // Doodle circles
-    ...Array.from({ length: 5 }, (_, i) => (
-      <DoodleCircle
-        key={`doodle-${i}`}
-        x={Math.random() * 100}
-        y={Math.random() * 100}
-        size={Math.random() * 35 + 20}
-        delay={Math.random() * 3}
-      />
-    )),
-    // Wavy lines
-    ...Array.from({ length: 4 }, (_, i) => (
-      <WavyLine
-        key={`wavy-${i}`}
-        x={Math.random() * 100}
-        y={Math.random() * 100}
-        width={Math.random() * 70 + 50}
-        height={Math.random() * 3 + 2}
-        delay={Math.random() * 3}
-      />
-    )),
-  ];
+    errors,
+    onSubmit,
+    SubmitButtonWithStatus,
+    matrixColumns,
+    particles,
+    backgroundPatterns,
+  } = useLogin();
 
   return (
     <LoginContainer>
@@ -216,14 +52,14 @@ export default function LoginPage() {
           )}
 
           <FormGroup>
-            <Label htmlFor="username">Mật danh</Label>
+            <Label htmlFor="email">Mật danh</Label>
             <Input
               type="text"
-              id="username"
+              id="email"
               placeholder="Nhập mật danh để vào cửa"
-              className={errors.username ? "error" : ""}
-              aria-describedby={serverError || errors.username ? "error-message" : undefined}
-              {...register("username", { 
+              className={errors.email ? "error" : ""}
+              aria-describedby={serverError || errors.email ? "error-message" : undefined}
+              {...register("email", { 
                 required: "Vui lòng nhập mật danh",
                 minLength: {
                   value: 3,
@@ -231,8 +67,8 @@ export default function LoginPage() {
                 }
               })}
             />
-            {errors.username && (
-              <ErrorMessage>{errors.username.message}</ErrorMessage>
+            {errors.email && (
+              <ErrorMessage>{errors.email.message}</ErrorMessage>
             )}
           </FormGroup>
 
@@ -265,3 +101,5 @@ export default function LoginPage() {
     </LoginContainer>
   );
 }
+
+export default LoginPage;

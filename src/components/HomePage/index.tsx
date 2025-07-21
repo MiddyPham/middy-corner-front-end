@@ -62,42 +62,39 @@ const HomePage = () => {
         </FloatingElements>
 
         <HeroContent>
-          <HeroTitle>Chào mừng đến với Blog Corner</HeroTitle>
+          <HeroTitle>Thế giới của những bí ẩn</HeroTitle>
           <HeroSubtitle>
-            Khám phá những bài viết đặc sắc, chia sẻ kiến thức và kết nối với
-            cộng đồng qua những câu chuyện thú vị và insights có giá trị
+            Hãy để tôi giúp bạn khám phá những bí ẩn của thế giới ảo giác
           </HeroSubtitle>
-          <CTAButton>Khám phá ngay</CTAButton>
+          <CTAButton>Cùng đi nào!!!</CTAButton>
         </HeroContent>
       </HeroSection>
 
       <FeaturesSection id="features">
-        <SectionTitle>Tại sao chọn Blog Corner?</SectionTitle>
+        <SectionTitle>Tại sao bạn lại lạc vào chốn này?</SectionTitle>
         <FeaturesGrid>
           <FeatureCard>
             <FeatureIcon>📚</FeatureIcon>
-            <FeatureTitle>Nội dung chất lượng</FeatureTitle>
+            <FeatureTitle>Những nội dung ảo giác</FeatureTitle>
             <FeatureDescription>
-              Những bài viết được chọn lọc kỹ lưỡng, đảm bảo thông tin chính xác
-              và có giá trị thực tế cho người đọc
+              Những bài viết sẽ đưa bạn đến với những bí ẩn của thế giới ảo giác
             </FeatureDescription>
           </FeatureCard>
 
           <FeatureCard>
             <FeatureIcon>🎨</FeatureIcon>
-            <FeatureTitle>Thiết kế đẹp mắt</FeatureTitle>
+            <FeatureTitle>Đẹp sao???</FeatureTitle>
             <FeatureDescription>
-              Giao diện hiện đại, responsive và trải nghiệm người dùng tối ưu
-              trên mọi thiết bị
+              Giao diện 2D chứa những màu sắc ảo giác để làm bạn thấy đau mắt 
             </FeatureDescription>
           </FeatureCard>
 
           <FeatureCard>
             <FeatureIcon>🚀</FeatureIcon>
-            <FeatureTitle>Tốc độ nhanh</FeatureTitle>
+            <FeatureTitle>Nhanh như gió nhưng lại chậm lắm</FeatureTitle>
             <FeatureDescription>
               Tải trang nhanh chóng, tối ưu hóa hiệu suất để mang đến trải
-              nghiệm mượt mà nhất
+              nghiệm mượt mà nhất, nhưng lại chậm lắm
             </FeatureDescription>
           </FeatureCard>
         </FeaturesGrid>

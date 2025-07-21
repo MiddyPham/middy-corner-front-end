@@ -10,5 +10,5 @@ export const UserLayoutContainer = styled.div`
 
 export const UserMainContent = styled.main`
   flex: 1;
-  padding-top: 80px; /* Space for fixed header */
+  padding-top: 80px; 
 `; 

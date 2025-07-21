@@ -16,11 +16,16 @@ import {
   LanguageOption,
   MobileMenuButton,
   Overlay,
-  NavLink,
   NavItemText,
   NavItem,
   LoginButton,
+  UserProfile,
+  UserAvatar,
+  UserInfo,
+  UserName,
+  LogoutButton,
 } from "./headerStyle";
+import { useAuth } from "@/hooks/useAuth";
 
 const LANGUAGE_MAP = {
   en: "EN",
@@ -36,7 +41,9 @@ const TypeLanguage = {
 
 type LanguageValue = (typeof TypeLanguage)[keyof typeof TypeLanguage];
 
-export default function Header() {
+export const Header = () => {
+  const { handleLogout, getCurrentUser } = useAuth();
+  const user = getCurrentUser();
   const trans = useTrans();
   const [scrolled, setScrolled] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -112,10 +119,21 @@ export default function Header() {
           </NavLinks>
 
           <RightSection>
-            <Link href="/login" passHref>
-              <LoginButton $scrolled={scrolled}>Đăng nhập</LoginButton>
-            </Link>
-
+            {!!user ? (
+              <UserProfile>
+                <UserAvatar>
+                  <Image src={user.avatar} alt="avatar" width={40} height={40} />
+                </UserAvatar>
+                <UserInfo>
+                  <UserName>{user.name}</UserName>
+                  <LogoutButton onClick={handleLogout}>Đăng xuất</LogoutButton>
+                </UserInfo>
+              </UserProfile>
+            ) : (
+              <Link href="/login" passHref>
+                <LoginButton $scrolled={scrolled}>Đăng nhập</LoginButton>
+              </Link>
+            )}
             <LanguageButton
               $scrolled={scrolled}
               onClick={() => setIsDropdownOpen(!isDropdownOpen)}
@@ -152,4 +170,6 @@ export default function Header() {
       <Overlay $isOpen={isMenuOpen} onClick={closeMenu} />
     </>
   );
-}
+};
+
+export default Header;

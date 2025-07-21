@@ -68,11 +68,11 @@ export const MatrixRain = styled.div`
 export const MatrixColumn = styled.div<{ delay: number; left: number }>`
   position: absolute;
   top: -100vh;
-  left: ${({ left }) => left}%;
+  left: ${({ left }) => `${left}%`};
   width: 3px;
   height: 100vh;
   background: linear-gradient(180deg, transparent 0%, #333333 50%, transparent 100%);
-  animation: ${slideIn} ${() => 4 + Math.random() * 3}s linear infinite;
+  animation: ${slideIn} ${({ delay }) => 4 + delay}s linear infinite;
   animation-delay: ${({ delay }) => delay}s;
   opacity: 0.4;
 `;
