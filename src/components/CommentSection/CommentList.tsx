@@ -1,8 +1,9 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 'use client'
 
 import React, { useState, useEffect } from 'react';
-import { useAuth } from '@/contexts/AuthContext';
-import { CommentContainer, CommentHeader, CommentContent, CommentMeta, CommentAuthor, CommentDate, CommentText, NoComments } from './commentListStyle';
+import { CommentContainer, CommentHeader, CommentContent, CommentAuthor, CommentDate, CommentText, NoComments } from './commentListStyle';
+import Image from "next/image";
 
 interface Comment {
   id: string;
@@ -35,7 +36,7 @@ const CommentList: React.FC<CommentListProps> = ({ postId }) => {
       }
       const data = await response.json();
       setComments(data);
-    } catch (err) {
+    } catch {
       setError('Failed to load comments');
     } finally {
       setLoading(false);
@@ -61,7 +62,7 @@ const CommentList: React.FC<CommentListProps> = ({ postId }) => {
           <CommentHeader>
             <CommentAuthor>
               {comment.author.avatar && (
-                <img src={comment.author.avatar} alt={comment.author.name} />
+                <Image width={40} height={40} src={comment.author.avatar} alt={comment.author.name} />
               )}
               <span>{comment.author.name}</span>
             </CommentAuthor>

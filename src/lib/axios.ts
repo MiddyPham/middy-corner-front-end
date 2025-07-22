@@ -1,6 +1,7 @@
 import { HTTP_STATUS } from "@/constant/constant";
+import LocalStorageUtil, { LOCAL_KEY } from "@/utils/LocalStorageUtil";
 import axios, { AxiosInstance, AxiosResponse, InternalAxiosRequestConfig } from 'axios';
-import { getCookie, setCookie, deleteCookie } from 'cookies-next';
+import { deleteCookie, getCookie, setCookie } from 'cookies-next';
 
 const api: AxiosInstance = axios.create({
   baseURL: process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8001',
@@ -73,6 +74,12 @@ api.interceptors.response.use(
     return Promise.reject(error);
   }
 );
+
+const logout = () => {  
+  deleteCookie('accessToken');
+  deleteCookie('refreshToken');
+  LocalStorageUtil.removeItem(LOCAL_KEY.USER);
+};
 
 export const sendGet = async (url: string, params?: Record<string, unknown>) => {
   const response = await api.get(url, { params });

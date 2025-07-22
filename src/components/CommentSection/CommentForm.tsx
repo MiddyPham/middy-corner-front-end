@@ -1,6 +1,5 @@
 'use client'
 import React, { useState } from 'react';
-import { useAuth } from '@/contexts/AuthContext';
 import { FormContainer, TextArea, SubmitButton, ErrorMessage } from './commentFormStyle';
 
 interface CommentFormProps {
@@ -12,7 +11,6 @@ const CommentForm: React.FC<CommentFormProps> = ({ postId, onCommentAdded }) => 
   const [content, setContent] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const { user } = useAuth();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -39,7 +37,7 @@ const CommentForm: React.FC<CommentFormProps> = ({ postId, onCommentAdded }) => 
 
       setContent('');
       onCommentAdded?.();
-    } catch (err) {
+    } catch {
       setError('Failed to post comment. Please try again.');
     } finally {
       setIsSubmitting(false);

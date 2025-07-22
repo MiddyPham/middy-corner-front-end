@@ -21,19 +21,19 @@ class SessionStorageUtil {
     window.sessionStorage.removeItem(key);
   }
 
-  static setItemObject(key: string, itemObject: any) {
+  static setItemObject(key: string, itemObject: Record<string, unknown>) {
     const plainText = JSON.stringify(itemObject);
     SessionStorageUtil.setItem(key, plainText);
   }
 
-  static getItemObject(key: string, defaultValue: any = {}) {
+  static getItemObject(key: string, defaultValue: Record<string, unknown> = {}) {
     const stringJson = SessionStorageUtil.getItem(key);
     if (!stringJson) {
       return defaultValue;
     }
     try {
       return JSON.parse(stringJson);
-    } catch (e) {
+    } catch {
       return defaultValue;
     }
   }

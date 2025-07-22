@@ -1,6 +1,5 @@
 "use client";
 import { useState, useEffect } from "react";
-import { useRouter } from "next/navigation";
 import { useForm, Controller } from "react-hook-form";
 import { CreateContainer, CreateHeader, HeaderTitle, BackButton, CreateContent, FormContainer, FormSection, SectionTitle, FormGroup, Label, Input, Textarea, Select, RadioGroup, RadioLabel, RadioInput, FileUpload, FileInput, UploadText, ImagePreview, PreviewImage, TagInput, Tag, RemoveTag, TagInputField, ButtonGroup, SaveButton, DraftButton, PreviewButton, CancelButton, ErrorMessage } from "./createStyle";
 import QuillEditorCustom from "@/components/QuillEditor";
@@ -21,8 +20,6 @@ interface FormData {
 }
 
 export default function CreatePost() {
-  const router = useRouter();
-  const [mounted, setMounted] = useState(false);
   const [tagInput, setTagInput] = useState("");
   const [thumbnailPreview, setThumbnailPreview] = useState("");
 
@@ -52,15 +49,6 @@ export default function CreatePost() {
 
   const watchedTitle = watch("title");
   const watchedTags = watch("tags");
-
-  useEffect(() => {
-    setMounted(true);
-    // Check if user is logged in
-    const isLoggedIn = localStorage.getItem("isLoggedIn");
-    if (!isLoggedIn) {
-      router.push("/login");
-    }
-  }, [router]);
 
   // Auto-generate slug from title
   useEffect(() => {
@@ -146,21 +134,19 @@ export default function CreatePost() {
   };
 
   // Prevent hydration mismatch by not rendering until mounted
-  if (!mounted) {
-    return (
-      <CreateContainer>
-        <CreateHeader>
-          <HeaderTitle>Tạo bài viết mới</HeaderTitle>
-          <BackButton href="/admin">← Quay lại Dashboard</BackButton>
-        </CreateHeader>
-        <CreateContent>
-          <div style={{ textAlign: 'center', padding: '2rem' }}>
-            Đang tải...
-          </div>
-        </CreateContent>
-      </CreateContainer>
-    );
-  }
+    // return (
+    //   <CreateContainer>
+    //     <CreateHeader>
+    //       <HeaderTitle>Tạo bài viết mới</HeaderTitle>
+    //       <BackButton href="/admin">← Quay lại Dashboard</BackButton>
+    //     </CreateHeader>
+    //     <CreateContent>
+    //       <div style={{ textAlign: 'center', padding: '2rem' }}>
+    //         Đang tải...
+    //       </div>
+    //     </CreateContent>
+    //   </CreateContainer>
+    // );
 
   return (
     <CreateContainer>

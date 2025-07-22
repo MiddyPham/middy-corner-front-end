@@ -9,16 +9,20 @@ export const useAuth = () => {
   const handleLogout = () => {
     deleteCookie("accessToken");
     deleteCookie("refreshToken");
-    LocalStorageUtil.removeItem(LOCAL_KEY.USER);
+    if (typeof window !== "undefined") {
+      LocalStorageUtil.removeItem(LOCAL_KEY.USER);
+    }
     router.push(ROUTERS.LOGIN);
   };
 
   const isAuthenticated = (): boolean => {
+    if (typeof window === "undefined") return false;
     const token = getCookie('accessToken');
     return !!token;
   };
 
   const getCurrentUser = (): TypeUser | null => {
+    if (typeof window === "undefined") return null;
     const user = LocalStorageUtil.getItemObject(LOCAL_KEY.USER);
     return Object.keys(user).length > 0 ? user : null;
   };

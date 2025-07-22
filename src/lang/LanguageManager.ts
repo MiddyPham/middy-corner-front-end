@@ -20,10 +20,10 @@ export class LanguageManager {
   public static setLanguage(lang: string) {
     let value = lang;
     if (LIST_LANGUAGE.includes(lang) === false) {
-      Debug.log('language invalid: ', lang);
+      Debug.log('language invalid: ' + lang);
       value = getLanguageOfBrowser();
     }
-    Debug.log('change language to ', value);
+    Debug.log('change language to ' + value);
     LanguageManager.currentLanguage = value;
   }
 

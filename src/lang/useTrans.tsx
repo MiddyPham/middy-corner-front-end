@@ -3,11 +3,15 @@ import jp from './jp';
 import vi from './vi';
 import { LanguageManager } from './LanguageManager';
 
-export const transWithVariable = (text: string, data: Record<string, any>) => {
+interface TranslationData {
+  [key: string]: string | TranslationData;
+}
+
+export const transWithVariable = (text: string, data: Record<string, unknown>) => {
   let finalText = text;
   Object.keys(data).forEach((item) => {
     while (finalText?.includes(`{{${item}}}`)) {
-      finalText = finalText?.replace(`{{${item}}}`, data[item]);
+      finalText = finalText?.replace(`{{${item}}}`, data[item] as string);
     }
   });
   return finalText;
@@ -15,9 +19,9 @@ export const transWithVariable = (text: string, data: Record<string, any>) => {
 
 export const transWithComponent = (
   textFormat: string,
-  data: Record<string, any>,
+  data: Record<string, React.ReactNode>,
 ) => {
-  const result: any[] = [];
+  const result: React.ReactNode[] = [];
   const regex = /\{\{.*?\}\}/g; 
   const listText = textFormat.split(regex);
   const listKey = Array.from(textFormat.matchAll(regex));
@@ -49,14 +53,14 @@ export const getLanguageOfBrowser = () => {
 
 export const getTrans = () => {
   const locale = LanguageManager.getLanguage();
-  const translations: { [key: string]: any } = { en: en, id: vi };
+  const translations: { [key: string]: TranslationData } = { en: en, id: vi }; 
   const trans = translations[locale] || jp;
   return trans;
 };
 
 const useTrans = () => {
   const locale = LanguageManager.getLanguage();
-  const translations: { [key: string]: any } = { en: en, id: vi };
+  const translations: { [key: string]: TranslationData } = { en: en, id: vi };
   const trans = translations[locale] || jp;
   return trans;
 };

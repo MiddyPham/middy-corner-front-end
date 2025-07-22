@@ -1,6 +1,7 @@
 import React from 'react';
 import { useAuth } from '@/contexts/AuthContext';
 import { ButtonContainer, SocialButton } from "./authButtonsStyle";
+import Image from 'next/image';
 
 const AuthButtons = () => {
   const { login } = useAuth();
@@ -16,11 +17,11 @@ const AuthButtons = () => {
   return (
     <ButtonContainer>
       <SocialButton onClick={() => handleLogin('facebook')}>
-        <img src="/icons/facebook.svg" alt="Facebook" />
+        <Image width={20} height={20} src="/icons/facebook.svg" alt="Facebook" />
         Continue with Facebook
       </SocialButton>
       <SocialButton onClick={() => handleLogin('google')}>
-        <img src="/icons/google.svg" alt="Google" />
+        <Image width={20} height={20} src="/icons/google.svg" alt="Google" />
         Continue with Google
       </SocialButton>
     </ButtonContainer>

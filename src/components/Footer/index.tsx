@@ -17,7 +17,7 @@ const Footer = () => {
     <FooterContainer>
       <FooterContent>
         <Copyright>
-          © 2025 Middy Corner. {trans.footer.copyright}
+          © 2025 Middy Corner. {(trans.footer as Record<string, string>).copyright}
         </Copyright>
         <SocialLinks>
           <SocialLink href="/privacy" target="_blank" rel="noopener noreferrer">

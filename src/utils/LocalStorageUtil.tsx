@@ -1,5 +1,3 @@
-import SessionStorageUtil, { COMMON_KEY } from './SessionStorageUtil';
-
 export enum LOCAL_KEY {
   USER = 'user',
 }
@@ -25,43 +23,43 @@ class LocalStorageUtil {
     window.localStorage.removeItem(key);
   }
 
-  static setItemObject(key: string, itemObject: any) {
+  static setItemObject(key: string, itemObject: Record<string, unknown>) {
     const plainText = JSON.stringify(itemObject);
     LocalStorageUtil.setItem(key, plainText);
   }
 
-  static getItemObject(key: string, defaultValue: any = {}) {
+  static getItemObject(key: string, defaultValue: Record<string, unknown> = {}) {
     const stringJson = LocalStorageUtil.getItem(key);
     if (!stringJson) {
       return defaultValue;
     }
     try {
       return JSON.parse(stringJson);
-    } catch (e) {
+    } catch {
       return defaultValue;
     }
   }
 
-  static getDefaultValueByUser(
-    key: string,
-    idObject: string,
-    methodObject: string,
-  ) {
-    const profile = SessionStorageUtil.getItemObject(
-      COMMON_KEY.myProfile,
-      null,
-    );
-    const storedData = LocalStorageUtil.getItemObject(key, {});
+  // static getDefaultValueByUser(
+  //   key: string,
+  //   idObject: string,
+  //   methodObject: string,
+  // ) {
+  //   const profile = SessionStorageUtil.getItemObject(
+  //     COMMON_KEY.myProfile,
+  //     null,
+  //   );
+  //   const storedData = LocalStorageUtil.getItemObject(key, {});
 
-    if (
-      storedData &&
-      storedData[profile.id] &&
-      storedData[profile.id][idObject]
-    ) {
-      return storedData[profile.id][idObject][methodObject];
-    }
-    return null;
-  }
+  //   if (
+  //     storedData &&
+  //     storedData[profile.id] &&
+  //     storedData[profile.id][idObject]
+  //   ) {
+  //     return storedData[profile.id][idObject][methodObject];
+  //   }
+  //   return null;
+  // }
 
   static getCurrentUserId(): string | null {
     const result = LocalStorageUtil.getItemObject('user-info')?.id;
@@ -88,7 +86,7 @@ class LocalStorageUtil {
     return storedData[key] ?? null;
   }
 
-  static setUserLocalDataObject(key: string, objectData: any) {
+  static setUserLocalDataObject(key: string, objectData: Record<string, unknown>) {
     const userId = LocalStorageUtil.getCurrentUserId();
     if (!userId) {
       return;
@@ -98,7 +96,7 @@ class LocalStorageUtil {
     LocalStorageUtil.setItemObject(userId, storedData);
   }
 
-  static getUserLocalDataObject(key: string): any | null {
+  static getUserLocalDataObject(key: string): Record<string, unknown> | null {
     const userId = LocalStorageUtil.getCurrentUserId();
     if (!userId) return null;
     const storedData = LocalStorageUtil.getItemObject(userId, {});

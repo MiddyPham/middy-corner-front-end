@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { CardContainer, CardImage, CardContent, CardTitle, CardExcerpt, CardMeta, CardDate, CardReadMore } from './blogCardStyle';
 
 interface BlogCardProps {
-  id: string;
+  id?: string;
   title: string;
   excerpt: string;
   date: string;
@@ -13,8 +13,8 @@ interface BlogCardProps {
   slug: string;
 }
 
-const BlogCard: React.FC<BlogCardProps> = ({ id, title, excerpt, date, imageUrl, slug }) => {
-  return (
+const BlogCard: React.FC<BlogCardProps> = ({ title, excerpt, date, imageUrl, slug }) => {
+   return (
     <CardContainer>
       {imageUrl && (
         <Link href={`/blog/${slug}`}>

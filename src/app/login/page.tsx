@@ -1,5 +1,4 @@
 "use client";
-import { useRouter } from "next/navigation";
 import TypingAnimation from "./components/TypingAnimation";
 import {
   LoginContainer,
@@ -14,7 +13,7 @@ import {
   Input,
   BackLink,
   ErrorMessage,
-  BackgroundPattern,  
+  BackgroundPattern,
 } from "./loginStyle";
 import { useLogin } from "./useLogin";
 
@@ -58,13 +57,15 @@ const LoginPage = () => {
               id="email"
               placeholder="Nhập mật danh để vào cửa"
               className={errors.email ? "error" : ""}
-              aria-describedby={serverError || errors.email ? "error-message" : undefined}
-              {...register("email", { 
+              aria-describedby={
+                serverError || errors.email ? "error-message" : undefined
+              }
+              {...register("email", {
                 required: "Vui lòng nhập mật danh",
                 minLength: {
                   value: 3,
-                  message: "Mật danh phải có ít nhất 3 ký tự"
-                }
+                  message: "Mật danh phải có ít nhất 3 ký tự",
+                },
               })}
             />
             {errors.email && (
@@ -79,13 +80,15 @@ const LoginPage = () => {
               id="password"
               placeholder="Nói đi"
               className={errors.password ? "error" : ""}
-              aria-describedby={serverError || errors.password ? "error-message" : undefined}
-              {...register("password", { 
+              aria-describedby={
+                serverError || errors.password ? "error-message" : undefined
+              }
+              {...register("password", {
                 required: "Vui lòng nhập bí mật",
                 minLength: {
                   value: 6,
-                  message: "Bí mật phải có ít nhất 6 ký tự"
-                }
+                  message: "Bí mật phải có ít nhất 6 ký tự",
+                },
               })}
             />
             {errors.password && (
@@ -100,6 +103,6 @@ const LoginPage = () => {
       </LoginCard>
     </LoginContainer>
   );
-}
+};
 
 export default LoginPage;

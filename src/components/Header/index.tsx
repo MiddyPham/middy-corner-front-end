@@ -81,10 +81,10 @@ export const Header = () => {
   };
 
   const navLinks = [
-    { href: "/#home", label: trans.header.home },
-    { href: "/blog", label: trans.header.blog },
-    { href: "/#features", label: trans.header.features },
-    { href: "/#food", label: trans.header.food },
+    { href: "/#home", label: (trans.header as Record<string, string>).home },
+    { href: "/blog", label: (trans.header as Record<string, string>).blog },
+    { href: "/#features", label: (trans.header as Record<string, string>).features },
+    { href: "/#food", label: (trans.header as Record<string, string>).food },
   ];
 
   return (

@@ -1,16 +1,16 @@
 'use client'
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import CommentForm from './CommentForm';
 import CommentList from './CommentList';
 import AuthButtons from '../AuthButtons';
-import { useAuth } from '@/contexts/AuthContext';
+import { useAuth } from '@/hooks/useAuth';
 
-export default function CommentSection({ postId }) {
-  const { user, isAuthenticated } = useAuth();
+export default function CommentSection({ postId }: { postId: string }) {
+  const { isAuthenticated } = useAuth();
   
   return (
     <div>
-      {isAuthenticated ? (
+      {isAuthenticated() ? (
         <CommentForm postId={postId} />
       ) : (
         <div>
