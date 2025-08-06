@@ -1,6 +1,6 @@
 'use client'
 
-import styled, { keyframes } from "styled-components";
+import styled, { css, keyframes } from "styled-components";
 
 export const bounce = keyframes`
   0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
@@ -29,6 +29,21 @@ export const shake = keyframes`
   0%, 100% { transform: translateX(0); }
   10%, 30%, 50%, 70%, 90% { transform: translateX(-2px); }
   20%, 40%, 60%, 80% { transform: translateX(2px); }
+`;
+
+export const verticalMove = keyframes`
+  0% { 
+    transform: translateY(-50px); 
+    opacity: 0.8;
+  }
+  50% { 
+    transform: translateY(calc(100vh - 100px)); 
+    opacity: 1;
+  }
+  100% { 
+    transform: translateY(-50px); 
+    opacity: 0.8;
+  }
 `;
 
 export const LandingContainer = styled.div`
@@ -63,7 +78,7 @@ export const HeroContent = styled.div`
   color: #000000;
   max-width: 800px;
   z-index: 1;
-  animation: ${slideIn} 1s ease-out;
+  ${css`animation: ${slideIn} 0.5s ease-out;`}
   background: #ffffff;
   border: 5px solid #000000;
   border-radius: 20px;
@@ -166,8 +181,35 @@ export const FloatingElement = styled.div<{
   background: #333333;
   border: 3px solid #000000;
   border-radius: 50%;
-  animation: ${bounce} ${(props) => props.duration}s ease-in-out infinite;
+  animation: ${bounce} ${(props) => props.duration}s ease-in-out infinite; 
   animation-delay: ${(props) => props.delay}s;
+`;
+
+// Component cho GIF chạy dọc
+export const MovingGif = styled.div`
+  position: fixed;
+  right: 20px;
+  width: 80px;
+  height: 80px;
+  z-index: 10;
+  animation: ${verticalMove} 20s ease-in-out infinite;
+  border-radius: 50%;
+  border: 3px solid #000000;
+  box-shadow: 4px 4px 0px #333333;
+  overflow: hidden;
+  
+  img {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover;
+    position: relative !important;
+  }
+  
+  @media (max-width: 768px) {
+    width: 60px;
+    height: 60px;
+    right: 10px;
+  }
 `;
 
 export const FeaturesSection = styled.section`

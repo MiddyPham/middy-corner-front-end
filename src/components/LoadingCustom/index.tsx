@@ -1,4 +1,13 @@
-import { LoadingContainer, LoadingCard, LoadingSpinner, LoadingText, LoadingSubtext, LoadingDots, Dot } from './loadingCustomStyle';
+"use client";
+import {
+  LoadingContainer,
+  LoadingCard,
+  LoadingSpinner,
+  LoadingText,
+  LoadingSubtext,
+  LoadingDots,
+  Dot,
+} from "./loadingCustomStyle";
 
 const LoadingCustom = () => {
   return (

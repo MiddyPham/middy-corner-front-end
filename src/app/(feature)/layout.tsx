@@ -1,4 +1,4 @@
-import ProtectedRoute from '@/components/ProtectedRoute';
+import ClientOnlyProtectedRoute from "@/components/ClientOnlyProtectedRoute";
 import { ERole } from "@/constant/enums";
 
 export default function AdminLayout({
@@ -6,9 +6,5 @@ export default function AdminLayout({
 }: {
   children: React.ReactNode;
 }) {
-  return (
-    <ProtectedRoute requiredRole={ERole.ADMIN}>
-      {children}
-    </ProtectedRoute>
-  );
-} 
+  return <ClientOnlyProtectedRoute requiredRole={ERole.ADMIN}>{children}</ClientOnlyProtectedRoute>;
+}

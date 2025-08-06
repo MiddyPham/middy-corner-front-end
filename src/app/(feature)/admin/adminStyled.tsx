@@ -1,5 +1,5 @@
 import Link from "next/link";
-import styled, { keyframes } from 'styled-components';
+import styled, { keyframes, css } from 'styled-components';
 
 export const bounce = keyframes`
   0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
@@ -8,7 +8,7 @@ export const bounce = keyframes`
 `;
 
 export const AdminContainer = styled.div`
-  min-height: 100vh;
+  min-height: 100%;
   background: #ffffff;
   
   &::before {
@@ -58,7 +58,7 @@ export const LogoutButton = styled.button`
   &:hover {
     transform: translateY(-3px);
     box-shadow: 6px 6px 0px #333333;
-    animation: ${bounce} 0.5s ease;
+    ${css`animation: ${bounce} 0.5s ease;`} 
   }
   
   &:active {
@@ -98,7 +98,7 @@ export const DashboardCard = styled.div`
     box-shadow: 
       12px 12px 0px #333333,
       inset 0 0 0 2px #ffffff;
-    animation: ${bounce} 0.5s ease;
+    ${css`animation: ${bounce} 0.5s ease;`}
   }
   
   &::before {
@@ -152,7 +152,7 @@ export const CreatePostButton = styled(Link)`
   &:hover {
     transform: translateY(-5px);
     box-shadow: 6px 6px 0px #333333;
-    animation: ${bounce} 0.5s ease;
+    ${css`animation: ${bounce} 0.5s ease;`}
   }
   
   &:active {
@@ -217,7 +217,7 @@ export const ActionButton = styled.button<{ variant?: 'edit' | 'delete' }>`
   &:hover {
     transform: translateY(-2px);
     box-shadow: 5px 5px 0px #666666;
-    animation: ${bounce} 0.3s ease;
+    ${css`animation: ${bounce} 0.3s ease;`}
   }
   
   &:active {

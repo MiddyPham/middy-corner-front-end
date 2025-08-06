@@ -1,6 +1,6 @@
 "use client";
 
-import styled, { keyframes } from "styled-components";
+import styled, { css, keyframes } from "styled-components";
 
 export const bounce = keyframes`
   0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
@@ -64,7 +64,7 @@ export const SocialLink = styled.a`
     background: #000000;
     transform: translateY(-3px);
     box-shadow: 5px 5px 0px #333333;
-    animation: ${bounce} 0.5s ease;
+    ${css`animation: ${bounce} 0.5s ease;`}
   }
   
   &:active {

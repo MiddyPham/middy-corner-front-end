@@ -1,4 +1,4 @@
-import styled, { keyframes } from 'styled-components';
+import styled, { keyframes } from "styled-components";
 
 export const bounce = keyframes`
   0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
@@ -100,6 +100,6 @@ export const Dot = styled.div<{ delay: number }>`
   border: 2px solid #000000;
   border-radius: 50%;
   animation: ${bounce} 1.5s ease-in-out infinite;
-  animation-delay: ${props => props.delay}s;
+  animation-delay: ${(props) => props.delay}s;
   box-shadow: 2px 2px 0px #333333;
 `;

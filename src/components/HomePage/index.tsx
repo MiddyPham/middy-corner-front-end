@@ -1,4 +1,5 @@
 import React from "react";
+import Image from "next/image";
 import {
     LandingContainer,
     HeroSection,
@@ -28,11 +29,22 @@ import {
     CTATitle,
     CTADescription,
     SecondaryButton,
+    MovingGif,
   } from "./indexStyle";
 
 const HomePage = () => {
   return (
     <LandingContainer>
+      <MovingGif>
+        <Image 
+          src="/assets/gif/giphy.gif" 
+          alt="Moving GIF" 
+          width={80}
+          height={80}
+          unoptimized
+        />
+      </MovingGif>
+      
       <HeroSection id="home">
         <FloatingElements>
           <FloatingElement

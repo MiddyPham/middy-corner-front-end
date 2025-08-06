@@ -12,3 +12,10 @@ export type TypeUser = {
   name: string;
   avatar: string;
 };
+
+export type TypeCategory = {
+  id?: string;
+  name: string;
+  description: string;
+  status: string;
+};

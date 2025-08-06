@@ -49,8 +49,7 @@ export const useLogin = () => {
         router.push(ROUTERS.HOME);
       }
     },
-    onError: (error) => {
-      console.log(error);
+    onError: () => {
       setIsLoading(false);
     },
   });
@@ -62,7 +61,6 @@ export const useLogin = () => {
   } = useForm<FormData>();
 
   const onSubmit = (data: FormData) => {
-    console.log(data);
     setIsLoading(true);
     setServerError("");
     

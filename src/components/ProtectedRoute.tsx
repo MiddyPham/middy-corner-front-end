@@ -19,13 +19,21 @@ export default function ProtectedRoute({
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(true);
   const [isAuthorized, setIsAuthorized] = useState(false);
+  const [isMounted, setIsMounted] = useState(false);
   const { isAuthenticated } = useAuth();
 
+  // Prevent hydration mismatch by ensuring component only renders after mount
   useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
+  useEffect(() => {
+    // Only run auth check after component is mounted (client-side only)
+    if (!isMounted) return;
+
     const checkAuth = async () => {
       try {
         const authenticated = isAuthenticated();
-        console.log(authenticated);
         
         if (!authenticated) {
           router.push('/login');
@@ -50,9 +58,10 @@ export default function ProtectedRoute({
     };
 
     checkAuth();
-  }, [router, requiredRole]);
+  }, [router, requiredRole, isMounted]);
 
-  if (isLoading) {
+  // Show loading until component is mounted and auth check is complete
+  if (!isMounted || isLoading) {
     return (
       <LoadingCustom />
     );

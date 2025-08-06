@@ -1,4 +1,4 @@
-import styled, { keyframes } from 'styled-components'
+import styled, { css, keyframes } from 'styled-components'
 
 export const bounce = keyframes`
   0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
@@ -128,7 +128,7 @@ export const Logo = styled.div`
   }
   
   &:hover {
-    animation: ${wiggle} 0.5s ease;
+    ${css`animation: ${wiggle} 0.5s ease;`}
   }
 `;
 
@@ -184,7 +184,7 @@ export const NavLink = styled.div<{ $scrolled: boolean }>`
   &:hover {
     transform: translateY(100%);
     color: transparent;
-    animation: ${bounce} 0.5s ease;
+    ${css`animation: ${bounce} 0.5s ease;`}
     
     &::before {
       top: 0;
@@ -226,7 +226,7 @@ export const LanguageButton = styled.div<{ $scrolled: boolean }>`
   &:hover {
     transform: translateY(-3px);
     box-shadow: 6px 6px 0px #333333;
-    animation: ${wiggle} 0.5s ease;
+    ${css`animation: ${wiggle} 0.5s ease;`}
   }
 `;
 
@@ -302,7 +302,7 @@ export const LoginButton = styled.button<{ $scrolled: boolean }>`
   &:hover {
     transform: translateY(-3px);
     box-shadow: 6px 6px 0px #333333;
-    animation: ${bounce} 0.5s ease;
+    ${css`animation: ${bounce} 0.5s ease;`}
   }
   
   &:active {
@@ -447,7 +447,7 @@ export const LogoutButton = styled.button`
   &:hover {
     transform: translateY(-3px);
     box-shadow: 6px 6px 0px #333333;
-    animation: ${wiggle} 0.5s ease;
+    ${css`animation: ${wiggle} 0.5s ease;`}
   }
   
   &:active {

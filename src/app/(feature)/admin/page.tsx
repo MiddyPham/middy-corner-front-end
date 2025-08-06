@@ -21,6 +21,8 @@ import {
 } from "./adminStyled";
 import { useAuth } from "@/hooks/useAuth";
 import { TypeUser } from "@/constant/types";
+import CategoryManager from "@/components/CategoryManager";
+import AdminLayout from "@/components/AdminLayout";
 
 interface Post {
   id: number;
@@ -86,80 +88,84 @@ export default function AdminPage() {
   }
 
   return (
-    <AdminContainer>
-      <AdminHeader>
-        <AdminTitle>
-          Admin Dashboard
-          {user && <span className="text-sm text-gray-500 ml-2">({user.name})</span>}
-        </AdminTitle>
-        <LogoutButton onClick={handleLogout}>Đăng xuất</LogoutButton>
-      </AdminHeader>
+    <AdminLayout user={user ? { name: user.name, role: user.role, avatar: user.avatar } : undefined}>
+      <AdminContainer>
+        <AdminHeader>
+          <AdminTitle>
+            Admin Dashboard
+            {user && <span className="text-sm text-gray-500 ml-2">({user.name})</span>}
+          </AdminTitle>
+          <LogoutButton onClick={handleLogout}>Đăng xuất</LogoutButton>
+        </AdminHeader>
 
-      <AdminContent>
-        <DashboardGrid>
-          <DashboardCard>
-            <CardNumber>{posts.length}</CardNumber>
-            <CardLabel>Tổng bài viết</CardLabel>
-          </DashboardCard>
-          <DashboardCard>
-            <CardNumber>
-              {posts.filter((p) => p.status === "published").length}
-            </CardNumber>
-            <CardLabel>Bài viết đã xuất bản</CardLabel>
-          </DashboardCard>
-          <DashboardCard>
-            <CardNumber>
-              {posts.filter((p) => p.status === "draft").length}
-            </CardNumber>
-            <CardLabel>Bài viết nháp</CardLabel>
-          </DashboardCard>
-          <DashboardCard>
-            <CardNumber>
-              {posts.reduce((sum, post) => sum + post.views, 0)}
-            </CardNumber>
-            <CardLabel>Tổng lượt xem</CardLabel>
-          </DashboardCard>
-        </DashboardGrid>
+        <AdminContent>
+          <DashboardGrid>
+            <DashboardCard>
+              <CardNumber>{posts.length}</CardNumber>
+              <CardLabel>Tổng bài viết</CardLabel>
+            </DashboardCard>
+            <DashboardCard>
+              <CardNumber>
+                {posts.filter((p) => p.status === "published").length}
+              </CardNumber>
+              <CardLabel>Bài viết đã xuất bản</CardLabel>
+            </DashboardCard>
+            <DashboardCard>
+              <CardNumber>
+                {posts.filter((p) => p.status === "draft").length}
+              </CardNumber>
+              <CardLabel>Bài viết nháp</CardLabel>
+            </DashboardCard>
+            <DashboardCard>
+              <CardNumber>
+                {posts.reduce((sum, post) => sum + post.views, 0)}
+              </CardNumber>
+              <CardLabel>Tổng lượt xem</CardLabel>
+            </DashboardCard>
+          </DashboardGrid>
 
-        <SectionTitle>Quản lý bài viết</SectionTitle>
-        <CreatePostButton href="/admin/create">
-          + Tạo bài viết mới
-        </CreatePostButton>
+          <CategoryManager onCategoryChange={() => console.log("Category changed")} />
+          
+          <SectionTitle>Quản lý bài viết</SectionTitle>
+          <CreatePostButton href="/admin/create">
+            + Tạo bài viết mới
+          </CreatePostButton>
 
-        <PostsTable>
-          <TableHeader>
-            <div>ID</div>
-            <div>Tiêu đề</div>
-            <div>Trạng thái</div>
-            <div>Ngày tạo</div>
-            <div>Thao tác</div>
-          </TableHeader>
+          <PostsTable>
+            <TableHeader>
+              <div>ID</div>
+              <div>Tiêu đề</div>
+              <div>Trạng thái</div>
+              <div>Ngày tạo</div>
+              <div>Thao tác</div>
+            </TableHeader>
 
-          {posts.map((post) => (
-            <TableRow key={post.id}>
-              <div>#{post.id}</div>
-              <div>{post.title}</div>
-              <div>
-                <StatusBadge status={post.status}>
-                  {post.status === "published" ? "Đã xuất bản" : "Nháp"}
-                </StatusBadge>
-              </div>
-              <div>{post.date}</div>
-              <div>
-                <ActionButton onClick={() => handleEditPost()}>
-                  Sửa
-                </ActionButton>
-                <ActionButton
-                  variant="delete"
-                  onClick={() => handleDeletePost()}
-                >
-                  Xóa
-                </ActionButton>
-              </div>
-            </TableRow>
-          ))}
-        </PostsTable>
-      </AdminContent>
-    </AdminContainer>
+            {posts.map((post) => (
+              <TableRow key={post.id}>
+                <div>#{post.id}</div>
+                <div>{post.title}</div>
+                <div>
+                  <StatusBadge status={post.status}>
+                    {post.status === "published" ? "Đã xuất bản" : "Nháp"}
+                  </StatusBadge>
+                </div>
+                <div>{post.date}</div>
+                <div>
+                  <ActionButton onClick={() => handleEditPost()}>
+                    Sửa
+                  </ActionButton>
+                  <ActionButton
+                    variant="delete"
+                    onClick={() => handleDeletePost()}
+                  >
+                    Xóa
+                  </ActionButton>
+                </div>
+              </TableRow>
+            ))}
+          </PostsTable>
+        </AdminContent>
+      </AdminContainer>
+    </AdminLayout>
   );
 }
